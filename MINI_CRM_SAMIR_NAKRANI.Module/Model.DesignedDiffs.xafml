@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" ?>
+<Application Title="MINI_CRM_SAMIR_NAKRANI">
+  <Options>
+    <LayoutManagerOptions RequiredFieldMark="*" />
+  </Options>
+  <Views>
+  </Views>
+</Application>

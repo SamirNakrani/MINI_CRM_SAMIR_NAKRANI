@@ -1,0 +1,9 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="EasyTest" />
+    <BuildType Name="Release" />
+  </Configurations>
+  <Project Path="MINI_CRM_SAMIR_NAKRANI.Blazor.Server/MINI_CRM_SAMIR_NAKRANI.Blazor.Server.csproj" />
+  <Project Path="MINI_CRM_SAMIR_NAKRANI.Module/MINI_CRM_SAMIR_NAKRANI.Module.csproj" />
+</Solution>
