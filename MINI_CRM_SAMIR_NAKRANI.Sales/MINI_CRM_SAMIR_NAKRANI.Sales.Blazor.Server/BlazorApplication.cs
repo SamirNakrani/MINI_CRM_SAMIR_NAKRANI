@@ -4,19 +4,17 @@ using DevExpress.ExpressApp.Blazor;
 using DevExpress.ExpressApp.SystemModule;
 using DevExpress.ExpressApp.Updating;
 using DevExpress.ExpressApp.Xpo;
-using MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Services;
+using MINI_CRM_SAMIR_NAKRANI.Sales.Blazor.Server.Services;
 
-namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server
+namespace MINI_CRM_SAMIR_NAKRANI.Sales.Blazor.Server
 {
-    public class MINI_CRM_SAMIR_NAKRANIBlazorApplication : BlazorApplication
+    public class SalesBlazorApplication : BlazorApplication
     {
-        public MINI_CRM_SAMIR_NAKRANIBlazorApplication()
+        public SalesBlazorApplication()
         {
-            ApplicationName = "MINI_CRM_SAMIR_NAKRANI";
+            ApplicationName = "MINI_CRM_SAMIR_NAKRANI.Sales";
             CheckCompatibilityType = DevExpress.ExpressApp.CheckCompatibilityType.DatabaseSchema;
-            // Force database recreation in debug mode
-            DatabaseUpdateMode = DatabaseUpdateMode.UpdateDatabaseAlways;
-            DatabaseVersionMismatch += MINI_CRM_SAMIR_NAKRANIBlazorApplication_DatabaseVersionMismatch;
+            DatabaseVersionMismatch += SalesBlazorApplication_DatabaseVersionMismatch;
         }
         protected override void OnSetupStarted()
         {
@@ -28,7 +26,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server
             }
 #endif
         }
-        void MINI_CRM_SAMIR_NAKRANIBlazorApplication_DatabaseVersionMismatch(object sender, DatabaseVersionMismatchEventArgs e)
+        void SalesBlazorApplication_DatabaseVersionMismatch(object sender, DatabaseVersionMismatchEventArgs e)
         {
 #if EASYTEST
             e.Updater.Update();
