@@ -1,6 +1,7 @@
 ﻿using DevExpress.ExpressApp.Model;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl;
+using DevExpress.Persistent.Validation;
 using DevExpress.Xpo;
 using System;
 
@@ -14,107 +15,158 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
         public Lead(Session session) : base(session) { }
 
         private string subject;
+        private string firstName;
+        private string middleName;
+        private string lastName;
+        private string readableFirstName;
+        private string readableMiddleName;
+        private string readableLastName;
+        private string title;
+        private string phone;
+        private string mobile;
+        private string email;
+        private string company;
+        private string readableCompanyName;
+        private string website;
+        private Address address1;
+        private Address address2;
+
         [Size(500)]
+        [RuleRequiredField("Lead.Subject.Required", DefaultContexts.Save)]
         public string Subject
         {
             get => subject;
             set => SetPropertyValue(nameof(Subject), ref subject, value);
         }
 
-        private Contact contact;
-        [ExpandObjectMembers(ExpandObjectMembers.InDetailView)]
-        [ModelDefault("Visibility", "Hide")]
-        public Contact Contact
+        [Size(100)]
+        [RuleRequiredField("Lead.FirstName.Required", DefaultContexts.Save)]
+        public string FirstName
         {
-            get => contact;
-            set => SetPropertyValue(nameof(Contact), ref contact, value);
+            get => firstName;
+            set => SetPropertyValue(nameof(FirstName), ref firstName, value);
         }
 
-        private Company company;
-        [ExpandObjectMembers(ExpandObjectMembers.InDetailView)]
-        [ModelDefault("Visibility", "Hide")]
-        public Company Company
+        [Size(100)]
+        public string MiddleName
+        {
+            get => middleName;
+            set => SetPropertyValue(nameof(MiddleName), ref middleName, value);
+        }
+
+        [Size(100)]
+        [RuleRequiredField("Lead.LastName.Required", DefaultContexts.Save)]
+        public string LastName
+        {
+            get => lastName;
+            set => SetPropertyValue(nameof(LastName), ref lastName, value);
+        }
+
+        [Size(100)]
+        public string ReadableFirstName
+        {
+            get => readableFirstName;
+            set => SetPropertyValue(nameof(ReadableFirstName), ref readableFirstName, value);
+        }
+
+        [Size(100)]
+        public string ReadableMiddleName
+        {
+            get => readableMiddleName;
+            set => SetPropertyValue(nameof(ReadableMiddleName), ref readableMiddleName, value);
+        }
+
+        [Size(100)]
+        public string ReadableLastName
+        {
+            get => readableLastName;
+            set => SetPropertyValue(nameof(ReadableLastName), ref readableLastName, value);
+        }
+
+        [Size(50)]
+        public string Title
+        {
+            get => title;
+            set => SetPropertyValue(nameof(Title), ref title, value);
+        }
+
+        [Size(30)]
+        public string Phone
+        {
+            get => phone;
+            set => SetPropertyValue(nameof(Phone), ref phone, value);
+        }
+
+        [Size(30)]
+        [ModelDefault("EditMask", "+00 000 000 0000")]
+        public string Mobile
+        {
+            get => mobile;
+            set => SetPropertyValue(nameof(Mobile), ref mobile, value);
+        }
+
+        [Size(150)]
+        [RuleRequiredField("Lead.Email.Required", DefaultContexts.Save)]
+        [RuleRegularExpression(
+            "Lead.Email.Valid",
+            DefaultContexts.Save,
+            @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
+            CustomMessageTemplate = "Please enter a valid email address"
+        )]
+        public string Email
+        {
+            get => email;
+            set => SetPropertyValue(nameof(Email), ref email, value);
+        }
+
+        [Size(200)]
+        public string Company
         {
             get => company;
             set => SetPropertyValue(nameof(Company), ref company, value);
         }
 
-        private ContactMethod contactMethod;
-        [ExpandObjectMembers(ExpandObjectMembers.InDetailView)]
-        [ModelDefault("Visibility", "Hide")]
-        public ContactMethod ContactMethod
-        {
-            get => contactMethod;
-            set => SetPropertyValue(nameof(ContactMethod), ref contactMethod, value);
-        }
-
-        private string description;
-        [Size(SizeAttribute.Unlimited)]
-        [ModelDefault("Visibility", "Hide")]
-        public string Description
-        {
-            get => description;
-            set => SetPropertyValue(nameof(Description), ref description, value);
-        }
-
-        private string industry;
-        [Size(100)]
-        [ModelDefault("Visibility", "Hide")]
-        public string Industry
-        {
-            get => industry;
-            set => SetPropertyValue(nameof(Industry), ref industry, value);
-        }
-
-        private decimal revenue;
-        [ModelDefault("DisplayFormat", "{0:c}")]
-        [ModelDefault("EditMask", "c")]
-        [ModelDefault("Visibility", "Hide")]
-        public decimal Revenue
-        {
-            get => revenue;
-            set => SetPropertyValue(nameof(Revenue), ref revenue, value);
-        }
-
-        private int numberOfEmployees;
-        [ModelDefault("Visibility", "Hide")]
-        public int NumberOfEmployees
-        {
-            get => numberOfEmployees;
-            set => SetPropertyValue(nameof(NumberOfEmployees), ref numberOfEmployees, value);
-        }
-
-        private string sicCode;
-        [Size(50)]
-        [ModelDefault("Visibility", "Hide")]
-        public string SicCode
-        {
-            get => sicCode;
-            set => SetPropertyValue(nameof(SicCode), ref sicCode, value);
-        }
-
-        private string transactionCurrency;
-        [Size(10)]
-        [ModelDefault("Visibility", "Hide")]
-        public string TransactionCurrency
-        {
-            get => transactionCurrency;
-            set => SetPropertyValue(nameof(TransactionCurrency), ref transactionCurrency, value);
-        }
-
-        private string lastUsedInCampaign;
         [Size(200)]
-        [ModelDefault("Visibility", "Hide")]
-        public string LastUsedInCampaign
+        public string ReadableCompanyName
         {
-            get => lastUsedInCampaign;
-            set => SetPropertyValue(nameof(LastUsedInCampaign), ref lastUsedInCampaign, value);
+            get => readableCompanyName;
+            set => SetPropertyValue(nameof(ReadableCompanyName), ref readableCompanyName, value);
         }
+
+        [Size(200)]
+        [RuleRegularExpression(
+            "Lead.Website.Valid",
+            DefaultContexts.Save,
+            @"^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$",
+            CustomMessageTemplate = "Please enter a valid website URL"
+        )]
+        public string Website
+        {
+            get => website;
+            set => SetPropertyValue(nameof(Website), ref website, value);
+        }
+
+        [Aggregated]
+        [ExpandObjectMembers(ExpandObjectMembers.Never)]
+        public Address Address1
+        {
+            get => address1;
+            set => SetPropertyValue(nameof(Address1), ref address1, value);
+        }
+
+        [Aggregated]
+        [ExpandObjectMembers(ExpandObjectMembers.Never)]
+        public Address Address2
+        {
+            get => address2;
+            set => SetPropertyValue(nameof(Address2), ref address2, value);
+        }
+
+        [PersistentAlias("Concat(FirstName, ' ', LastName)")]
+        public string FullName => (string)EvaluateAlias(nameof(FullName));
 
         [Association("Lead-Activities")]
-        public XPCollection<Activity> Activities
-        {
-            get { return GetCollection<Activity>(nameof(Activities)); }
-        }
+        public XPCollection<Activity> Activities =>
+            GetCollection<Activity>(nameof(Activities));
     }
 }

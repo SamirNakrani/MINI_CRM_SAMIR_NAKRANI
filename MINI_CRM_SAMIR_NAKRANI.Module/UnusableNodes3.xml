@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <Views Id="Views">
+    <DetailView Id="Account_DetailView">
+      <Layout Id="Layout">
+        <TabbedGroup Id="TabbedGroup">
+          <LayoutGroup Id="Details">
+            <LayoutGroup Id="Address_Info" GroupBoxStyle="Box" />
+          </LayoutGroup>
+          <LayoutGroup Id="Summary">
+            <LayoutGroup Id="Account_Info" GroupBoxStyle="Box" />
+            <LayoutGroup Id="PrimaryContact_Info" GroupBoxStyle="Box" />
+          </LayoutGroup>
+        </TabbedGroup>
+      </Layout>
+    </DetailView>
+    <DetailView Id="Contact_DetailView">
+      <Layout Id="Layout">
+        <TabbedGroup Id="TabbedGroup">
+          <LayoutGroup Id="Summary">
+            <LayoutGroup Id="Account_Info" GroupBoxStyle="Box" />
+            <LayoutGroup Id="Contact_Info" GroupBoxStyle="Box" />
+          </LayoutGroup>
+        </TabbedGroup>
+      </Layout>
+    </DetailView>
+    <DetailView Id="Lead_DetailView">
+      <Layout Id="Layout">
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="99.55947136563877" Removed="True">
+            <LayoutGroup Id="Lead" RelativeSize="100" Removed="True">
+              <LayoutGroup Id="Lead_col1" RelativeSize="49.8371335504886">
+                <LayoutItem Id="Company.Address1" RelativeSize="8" />
+                <LayoutItem Id="Company.CompanyName" RelativeSize="6" />
+                <LayoutItem Id="Company.ReadableCompanyName" RelativeSize="6" />
+                <LayoutItem Id="Company.Website" RelativeSize="6" />
+                <LayoutItem Id="Contact.Account" RelativeSize="6" />
+                <LayoutItem Id="Contact.Email" RelativeSize="6" />
+                <LayoutItem Id="Contact.FirstName" RelativeSize="6" />
+                <LayoutItem Id="Contact.FullName" RelativeSize="8" />
+                <LayoutItem Id="Contact.LastName" RelativeSize="6" />
+                <LayoutItem Id="Contact.MiddleName" RelativeSize="6" />
+                <LayoutItem Id="Contact.Mobile" RelativeSize="6" />
+                <LayoutItem Id="Contact.Phone" RelativeSize="6" />
+                <LayoutItem Id="Contact.ReadableFirstName" RelativeSize="6" />
+                <LayoutItem Id="Contact.ReadableLastName" RelativeSize="6" />
+                <LayoutItem Id="Contact.ReadableMiddleName" RelativeSize="6" />
+                <LayoutItem Id="Contact.Title" RelativeSize="6" />
+              </LayoutGroup>
+              <LayoutGroup Id="Lead_col2" RelativeSize="50.1628664495114">
+                <LayoutItem Id="Company.Address2" RelativeSize="8" />
+                <LayoutItem Id="ContactMethod.DoNotBulkEmail" RelativeSize="6" />
+                <LayoutItem Id="ContactMethod.DoNotEmail" RelativeSize="6" />
+                <LayoutItem Id="ContactMethod.DoNotFax" RelativeSize="6" />
+                <LayoutItem Id="ContactMethod.DoNotPhone" RelativeSize="6" />
+                <LayoutItem Id="ContactMethod.DoNotPostalMail" RelativeSize="6" />
+                <LayoutItem Id="ContactMethod.DoNotSendMM" RelativeSize="6" />
+                <LayoutItem Id="ContactMethod.FollowEmail" RelativeSize="6" />
+                <LayoutItem Id="ContactMethod.PreferredContactMethod" RelativeSize="6" />
+                <LayoutItem Id="Industry" RelativeSize="6" />
+                <LayoutItem Id="LastUsedInCampaign" RelativeSize="14" />
+                <LayoutItem Id="NumberOfEmployees" RelativeSize="6" />
+                <LayoutItem Id="Revenue" RelativeSize="6" />
+                <LayoutItem Id="SicCode" RelativeSize="6" />
+                <LayoutItem Id="TransactionCurrency" RelativeSize="6" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+  </Views>
+</Application>

@@ -139,24 +139,9 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
         #endregion
 
         #region Collections
-
-        [Association("Account-Contacts")]
-        public XPCollection<Contact> Contacts
-        {
-            get { return GetCollection<Contact>(nameof(Contacts)); }
-        }
-
-        [Association("Account-Activities")]
-        public XPCollection<Activity> Activities
-        {
-            get { return GetCollection<Activity>(nameof(Activities)); }
-        }
-
-        [Association("Account-Opportunities")]
-        public XPCollection<Opportunities> Opportunities
-        {
-            get { return GetCollection<Opportunities>(nameof(Opportunities)); }
-        }
+ 
+      
+ 
 
         #endregion
 

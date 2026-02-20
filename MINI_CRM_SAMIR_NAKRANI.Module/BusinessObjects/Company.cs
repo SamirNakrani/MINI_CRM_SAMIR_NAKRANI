@@ -2,10 +2,6 @@
 using DevExpress.Persistent.BaseImpl;
 using DevExpress.Xpo;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
 {
@@ -56,16 +52,12 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
             set => SetPropertyValue(nameof(Address2), ref address2, value);
         }
 
+       
         protected override void OnSaving()
         {
             base.OnSaving();
-
-            // Auto-populate Readable Company Name if empty
             if (string.IsNullOrWhiteSpace(ReadableCompanyName))
-            {
                 ReadableCompanyName = CompanyName;
-            }
         }
-
     }
 }

@@ -49,6 +49,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
             set => SetPropertyValue(nameof(Completed), ref completed, value);
         }
 
+        // ✅ Many-side: Activity → Lead
         private Lead lead;
         [Association("Lead-Activities")]
         public Lead Lead
@@ -57,20 +58,12 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
             set => SetPropertyValue(nameof(Lead), ref lead, value);
         }
 
-        private Account account;
-        [Association("Account-Activities")]
-        public Account Account
-        {
-            get => account;
-            set => SetPropertyValue(nameof(Account), ref account, value);
-        }
+     
+  
 
-        private Contact contact;
-        [Association("Contact-Activities")]
-        public Contact Contact
-        {
-            get => contact;
-            set => SetPropertyValue(nameof(Contact), ref contact, value);
-        }
+        // ✅ Many-side: Activity → Contact
+        // Property renamed to "ActivityContact" to avoid the name conflict
+        // but Association string stays "Contact-Activities" to match Contact.cs
+    
     }
 }

@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DevExpress.Xpo;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl;
-using DevExpress.ExpressApp;
-using DevExpress.ExpressApp.DC;
 
 namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
 {
@@ -23,7 +17,6 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
         private string firstName;
         private string middleName;
         private string lastName;
-
         private string readableFirstName;
         private string readableMiddleName;
         private string readableLastName;
@@ -115,41 +108,17 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
         }
 
         #endregion
-
-        #region Account Reference
-
-        private Account account;
-        [Association("Account-Contacts")]
-        public Account Account
-        {
-            get => account;
-            set => SetPropertyValue(nameof(Account), ref account, value);
-        }
-
-        #endregion
+ 
 
         #region Collections
-
-        [Association("Contact-Activities")]
-        public XPCollection<Activity> Activities
-        {
-            get { return GetCollection<Activity>(nameof(Activities)); }
-        }
-
+ 
         #endregion
 
         #region Overrides
 
-        public override void AfterConstruction()
-        {
-            base.AfterConstruction();
-        }
-
         protected override void OnSaving()
         {
             base.OnSaving();
-
-            // Auto-generate FullName if not provided
             if (string.IsNullOrWhiteSpace(FullName))
             {
                 FullName = string.Join(" ",

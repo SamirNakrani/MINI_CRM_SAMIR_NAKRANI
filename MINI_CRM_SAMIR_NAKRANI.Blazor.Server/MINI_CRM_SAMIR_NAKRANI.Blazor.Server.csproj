@@ -26,4 +26,9 @@
   <ItemGroup>
     <ProjectReference Include="..\MINI_CRM_SAMIR_NAKRANI.Module\MINI_CRM_SAMIR_NAKRANI.Module.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="UnusableNodes.xml">
+      <DependentUpon>Model.xafml</DependentUpon>
+    </None>
+  </ItemGroup>
 </Project>

@@ -63,13 +63,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
             set => SetPropertyValue(nameof(EstimatedCloseDate), ref estimatedCloseDate, value);
         }
 
-        private Account account;
-        [Association("Account-Opportunities")]
-        public Account Account
-        {
-            get => account;
-            set => SetPropertyValue(nameof(Account), ref account, value);
-        }
+    
 
         private Contact contact;
         public Contact Contact
