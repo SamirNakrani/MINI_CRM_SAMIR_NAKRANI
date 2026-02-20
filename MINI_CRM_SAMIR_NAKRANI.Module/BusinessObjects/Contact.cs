@@ -108,10 +108,16 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
         }
 
         #endregion
- 
+
 
         #region Collections
- 
+
+        [Association("Contact-Leads")]
+        public XPCollection<Lead> Leads => GetCollection<Lead>(nameof(Leads));
+
+        [Association("Contact-Activities")]
+        public XPCollection<Activity> Activities => GetCollection<Activity>(nameof(Activities));
+
         #endregion
 
         #region Overrides

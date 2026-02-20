@@ -14,122 +14,77 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
     {
         public Account(Session session) : base(session) { }
 
-        #region Account Information
-
         private string accountName;
+        private string readableName;
+        private string phone;
+        private string fax;
+        private string website;
+        private string tickerSymbol;
+
+        private Account parentAccount;
+        private Contact primaryContact;
+
+        private Address address1;
+        private Address address2;
+
         [Size(200)]
-        [RuleRequiredField]
+        [RuleRequiredField("Account.AccountName.Required", DefaultContexts.Save)]
         public string AccountName
         {
             get => accountName;
             set => SetPropertyValue(nameof(AccountName), ref accountName, value);
         }
 
-        private string accountNumber;
-        [Size(100)]
-        public string AccountNumber
-        {
-            get => accountNumber;
-            set => SetPropertyValue(nameof(AccountNumber), ref accountNumber, value);
-        }
-
-        private string website;
         [Size(200)]
-        public string Website
+        public string ReadableName
         {
-            get => website;
-            set => SetPropertyValue(nameof(Website), ref website, value);
+            get => readableName;
+            set => SetPropertyValue(nameof(ReadableName), ref readableName, value);
         }
 
-        private string phone;
-        [Size(50)]
+        [Size(30)]
         public string Phone
         {
             get => phone;
             set => SetPropertyValue(nameof(Phone), ref phone, value);
         }
 
-        private string fax;
-        [Size(50)]
+        [Size(30)]
         public string Fax
         {
             get => fax;
             set => SetPropertyValue(nameof(Fax), ref fax, value);
         }
 
-        private string email;
         [Size(200)]
-        public string Email
+        [RuleRegularExpression(
+            "Account.Website.Valid",
+            DefaultContexts.Save,
+            @"^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$",
+            CustomMessageTemplate = "Please enter a valid website URL"
+        )]
+        public string Website
         {
-            get => email;
-            set => SetPropertyValue(nameof(Email), ref email, value);
+            get => website;
+            set => SetPropertyValue(nameof(Website), ref website, value);
         }
 
-        #endregion
-
-        #region Address Information
-
-        private string address1;
-        [Size(SizeAttribute.Unlimited)]
-        public string Address1
+        [Size(50)]
+        public string TickerSymbol
         {
-            get => address1;
-            set => SetPropertyValue(nameof(Address1), ref address1, value);
+            get => tickerSymbol;
+            set => SetPropertyValue(nameof(TickerSymbol), ref tickerSymbol, value);
         }
 
-        private string address2;
-        [Size(SizeAttribute.Unlimited)]
-        public string Address2
+        #region References
+
+        [Association("Account-Parent")]
+        public Account ParentAccount
         {
-            get => address2;
-            set => SetPropertyValue(nameof(Address2), ref address2, value);
+            get => parentAccount;
+            set => SetPropertyValue(nameof(ParentAccount), ref parentAccount, value);
         }
 
-        private string address3;
-        [Size(SizeAttribute.Unlimited)]
-        public string Address3
-        {
-            get => address3;
-            set => SetPropertyValue(nameof(Address3), ref address3, value);
-        }
-
-        private string city;
-        [Size(100)]
-        public string City
-        {
-            get => city;
-            set => SetPropertyValue(nameof(City), ref city, value);
-        }
-
-        private string stateOrProvince;
-        [Size(100)]
-        public string StateOrProvince
-        {
-            get => stateOrProvince;
-            set => SetPropertyValue(nameof(StateOrProvince), ref stateOrProvince, value);
-        }
-
-        private string postalCode;
-        [Size(20)]
-        public string PostalCode
-        {
-            get => postalCode;
-            set => SetPropertyValue(nameof(PostalCode), ref postalCode, value);
-        }
-
-        private string country;
-        [Size(100)]
-        public string Country
-        {
-            get => country;
-            set => SetPropertyValue(nameof(Country), ref country, value);
-        }
-
-        #endregion
-
-        #region Related Entities
-
-        private Contact primaryContact;
         public Contact PrimaryContact
         {
             get => primaryContact;
@@ -138,18 +93,49 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
 
         #endregion
 
+        #region Addresses
+
+        [Aggregated]
+        [ExpandObjectMembers(ExpandObjectMembers.Never)]
+        public Address Address1
+        {
+            get => address1;
+            set => SetPropertyValue(nameof(Address1), ref address1, value);
+        }
+
+        [Aggregated]
+        [ExpandObjectMembers(ExpandObjectMembers.Never)]
+        public Address Address2
+        {
+            get => address2;
+            set => SetPropertyValue(nameof(Address2), ref address2, value);
+        }
+
+        #endregion
+
         #region Collections
- 
-      
- 
+
+        [Association("Account-Parent")]
+        public XPCollection<Account> ChildAccounts =>
+            GetCollection<Account>(nameof(ChildAccounts));
+
+        [Association("Account-Leads")]
+        public XPCollection<Lead> Leads =>
+            GetCollection<Lead>(nameof(Leads));
+
+        [Association("Account-Activities")]
+        public XPCollection<Activity> Activities =>
+            GetCollection<Activity>(nameof(Activities));
 
         #endregion
 
         #region Overrides
 
-        public override void AfterConstruction()
+        protected override void OnSaving()
         {
-            base.AfterConstruction();
+            base.OnSaving();
+            if (string.IsNullOrWhiteSpace(ReadableName))
+                ReadableName = AccountName;
         }
 
         #endregion

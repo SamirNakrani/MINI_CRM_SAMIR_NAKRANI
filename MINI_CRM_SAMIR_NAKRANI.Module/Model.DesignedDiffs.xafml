@@ -8,33 +8,26 @@
       <Layout>
         <TabbedGroup Id="TabbedGroup" IsNewNode="True">
           <LayoutGroup Id="Details" Caption="Details" RelativeSize="100" IsNewNode="True">
-            <LayoutGroup Id="Address_Info" Caption="ADDRESS INFORMATION" RelativeSize="100" GroupBoxStyle="Box" IsNewNode="True">
+            <LayoutGroup Id="Account_Section" Caption="ACCOUNT" RelativeSize="100" GroupBoxStyle="Box" IsNewNode="True">
+              <LayoutItem Id="AccountName" ViewItem="AccountName" IsNewNode="True" />
+              <LayoutItem Id="ReadableName" ViewItem="ReadableName" IsNewNode="True" />
+              <LayoutItem Id="Phone" ViewItem="Phone" IsNewNode="True" />
+              <LayoutItem Id="Fax" ViewItem="Fax" IsNewNode="True" />
+              <LayoutItem Id="Website" ViewItem="Website" IsNewNode="True" />
+              <LayoutItem Id="ParentAccount" ViewItem="ParentAccount" IsNewNode="True" />
+              <LayoutItem Id="TickerSymbol" ViewItem="TickerSymbol" IsNewNode="True" />
+            </LayoutGroup>
+            <LayoutGroup Id="PrimaryContact_Section" Caption="PRIMARY CONTACT" RelativeSize="100" GroupBoxStyle="Box" IsNewNode="True">
+              <LayoutItem Id="PrimaryContact" ViewItem="PrimaryContact" IsNewNode="True" />
+            </LayoutGroup>
+            <LayoutGroup Id="Address_Section" Caption="ADDRESS" RelativeSize="100" GroupBoxStyle="Box" IsNewNode="True">
               <LayoutItem Id="Address1" ViewItem="Address1" IsNewNode="True" />
               <LayoutItem Id="Address2" ViewItem="Address2" IsNewNode="True" />
-              <LayoutItem Id="Address3" ViewItem="Address3" IsNewNode="True" />
-              <LayoutItem Id="City" ViewItem="City" IsNewNode="True" />
-              <LayoutItem Id="Country" ViewItem="Country" IsNewNode="True" />
-              <LayoutItem Id="PostalCode" ViewItem="PostalCode" IsNewNode="True" />
-              <LayoutItem Id="StateOrProvince" ViewItem="StateOrProvince" IsNewNode="True" />
             </LayoutGroup>
           </LayoutGroup>
           <LayoutGroup Id="Related" Caption="Related" RelativeSize="100" IsNewNode="True">
+            <LayoutItem Id="ChildAccounts" ViewItem="ChildAccounts" IsNewNode="True" />
             <LayoutItem Id="Activities" ViewItem="Activities" IsNewNode="True" />
-            <LayoutItem Id="Contacts" ViewItem="Contacts" IsNewNode="True" />
-            <LayoutItem Id="Opportunities" ViewItem="Opportunities" IsNewNode="True" />
-          </LayoutGroup>
-          <LayoutGroup Id="Summary" Caption="Summary" RelativeSize="100" IsNewNode="True">
-            <LayoutGroup Id="Account_Info" Caption="ACCOUNT" RelativeSize="60" GroupBoxStyle="Box" IsNewNode="True">
-              <LayoutItem Id="AccountName" ViewItem="AccountName" IsNewNode="True" />
-              <LayoutItem Id="AccountNumber" ViewItem="AccountNumber" IsNewNode="True" />
-              <LayoutItem Id="Email" ViewItem="Email" IsNewNode="True" />
-              <LayoutItem Id="Fax" ViewItem="Fax" IsNewNode="True" />
-              <LayoutItem Id="Phone" ViewItem="Phone" IsNewNode="True" />
-              <LayoutItem Id="Website" ViewItem="Website" IsNewNode="True" />
-            </LayoutGroup>
-            <LayoutGroup Id="PrimaryContact_Info" Caption="PRIMARY CONTACT" RelativeSize="40" GroupBoxStyle="Box" IsNewNode="True">
-              <LayoutItem Id="PrimaryContact" ViewItem="PrimaryContact" IsNewNode="True" />
-            </LayoutGroup>
           </LayoutGroup>
         </TabbedGroup>
       </Layout>
@@ -71,8 +64,17 @@
     </DetailView>
     <DetailView Id="Lead_DetailView">
       <Layout>
-        <TabbedGroup Id="MainTabs" Index="0" RelativeSize="100" IsNewNode="True">
-          <LayoutGroup Id="Related" Caption="Related" RelativeSize="0" ShowCaption="True" Direction="Horizontal" Index="0" IsNewNode="True" />
+		<TabbedGroup Id="MainTabs" Index="0" RelativeSize="100" IsNewNode="True">
+			<LayoutGroup Id="Related" Caption="Related" RelativeSize="0" ShowCaption="True" Direction="Horizontal" Index="0" IsNewNode="True" >
+				<TabbedGroup Id="Lead_AccountContact_Tabs" Index="3" RelativeSize="30">
+					<LayoutGroup Id="Tab_Account" Caption="Account">
+						<LayoutItem Id="ParentAccount" ViewItem="ParentAccount" />
+					</LayoutGroup>
+					<LayoutGroup Id="Tab_Contact" Caption="Contact">
+						<LayoutItem Id="ParentContact" ViewItem="ParentContact" />
+					</LayoutGroup>
+				</TabbedGroup>
+			</LayoutGroup>
           <LayoutGroup Id="Summary" Caption="Summary" RelativeSize="100" ShowCaption="True" Index="1" IsNewNode="True">
             <LayoutGroup Id="SummaryBody" RelativeSize="100" Direction="Horizontal" ShowCaption="False" Index="0" IsNewNode="True">
               <LayoutGroup Id="LeftSide" RelativeSize="64.54741379310344" ShowCaption="False" Index="0" IsNewNode="True">

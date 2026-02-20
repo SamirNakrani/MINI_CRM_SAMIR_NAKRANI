@@ -30,6 +30,8 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
         private string website;
         private Address address1;
         private Address address2;
+        private Account parentAccount;
+        private Contact parentContact;
 
         [Size(500)]
         [RuleRequiredField("Lead.Subject.Required", DefaultContexts.Save)]
@@ -164,6 +166,20 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
 
         [PersistentAlias("Concat(FirstName, ' ', LastName)")]
         public string FullName => (string)EvaluateAlias(nameof(FullName));
+
+        [Association("Account-Leads")]
+        public Account ParentAccount
+        {
+            get => parentAccount;
+            set => SetPropertyValue(nameof(ParentAccount), ref parentAccount, value);
+        }
+
+        [Association("Contact-Leads")]
+        public Contact ParentContact
+        {
+            get => parentContact;
+            set => SetPropertyValue(nameof(ParentContact), ref parentContact, value);
+        }
 
         [Association("Lead-Activities")]
         public XPCollection<Activity> Activities =>
