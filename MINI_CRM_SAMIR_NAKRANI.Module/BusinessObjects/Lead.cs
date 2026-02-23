@@ -184,5 +184,20 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
         [Association("Lead-Activities")]
         public XPCollection<Activity> Activities =>
             GetCollection<Activity>(nameof(Activities));
+
+        private LeadStatus status = LeadStatus.Open;
+
+        [DisplayName("Status")]
+        public LeadStatus Status
+        {
+            get => status;
+            set => SetPropertyValue(nameof(Status), ref status, value);
+        }
     }
+}
+public enum LeadStatus
+{
+    Open,
+    Qualified,
+    Disqualified
 }
