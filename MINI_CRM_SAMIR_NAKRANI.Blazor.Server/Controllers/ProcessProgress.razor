@@ -1,0 +1,183 @@
+﻿@using DevExpress.ExpressApp
+@using DevExpress.Blazor
+@using MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
+@implements IDisposable
+
+<div class="lead-status-wrapper">
+    <div class="lead-status-container">
+        @foreach (ProcessState stage in Enum.GetValues(typeof(ProcessState)))
+        {
+            <div class="lead-status-step">
+                <div class="lead-status-item
+                               @(IsCompleted(stage) ? "lead-status-completed" : "")">
+                    <DxCheckBox Checked="@IsCompleted(stage)"
+                                Enabled="true"
+                                CssClass="lead-status-checkbox" />
+
+                    <span class="lead-status-text">@stage</span>
+                </div>
+
+                @if (stage != ProcessState.Closed)
+                {
+                    <div class="lead-status-connector"></div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public LeadStatusBarViewItem ViewItem { get; set; }
+
+    private Lead Lead => ViewItem?.View?.CurrentObject as Lead;
+    private ProcessState? SelectedStage;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        SubscribeToEvents();
+        UpdateSelectedStage();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (!firstRender)
+        {
+            UpdateSelectedStage();
+        }
+    }
+
+    private void SubscribeToEvents()
+    {
+        if (ViewItem?.View?.ObjectSpace != null)
+        {
+            ViewItem.View.ObjectSpace.ObjectChanged += ObjectSpace_ObjectChanged;
+        }
+    }
+
+    private void ObjectSpace_ObjectChanged(object sender, ObjectChangedEventArgs e)
+    {
+        if (e.Object == Lead && e.PropertyName == nameof(Lead.State))
+        {
+            UpdateSelectedStage();
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private void UpdateSelectedStage()
+    {
+        if (Lead != null)
+        {
+            SelectedStage = Lead.State;
+        }
+    }
+
+    private bool IsCompleted(ProcessState stage)
+    {
+        if (stage == ProcessState.Open)
+            return true;
+
+        if (Lead == null)
+            return false;
+
+        return Lead.State >= stage;
+    }
+
+    public void RefreshUI()
+    {
+        UpdateSelectedStage();
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        if (ViewItem?.View?.ObjectSpace != null)
+        {
+            ViewItem.View.ObjectSpace.ObjectChanged -= ObjectSpace_ObjectChanged;
+        }
+    }
+}
+<style>
+    
+.lead-status-wrapper {
+    padding: 20px 40px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.lead-status-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.lead-status-step {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.lead-status-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background-color: #ffffff;
+    border: 2px solid #dee2e6;
+    border-radius: 6px;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.lead-status-completed {
+    background-color: #d1e7dd;
+    border-color: #0f5132;
+}
+
+.lead-status-selected {
+    background-color: #cfe2ff;
+    border-color: #084298;
+}
+
+.lead-status-text {
+    font-weight: 500;
+    color: #495057;
+}
+
+.lead-status-completed .lead-status-text {
+    color: #0f5132;
+}
+
+.lead-status-selected .lead-status-text {
+    color: #084298;
+    font-weight: 600;
+}
+
+.lead-status-connector {
+    flex: 1;
+    height: 3px;
+    margin: 0 12px;
+    background-color: #dee2e6;
+    border-radius: 2px;
+}
+
+.lead-status-completed + .lead-status-connector {
+    background-color: #0f5132;
+}
+
+/* DevExpress CheckBox */
+.lead-status-checkbox {
+    pointer-events: none;
+}
+
+.lead-status-completed .dx-checkbox-icon {
+    color: #0f5132;
+}
+
+.lead-status-selected .dx-checkbox-icon {
+    color: #084298;
+}
+</style>
