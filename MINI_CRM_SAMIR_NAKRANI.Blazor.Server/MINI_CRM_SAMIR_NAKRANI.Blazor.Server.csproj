@@ -12,18 +12,24 @@
     <None Remove="Model.xafml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Model.xafml">
+    <EmbeddedResource Include="Model.xafml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DevExpress.Drawing.Skia" Version="25.2.*" />
-    <PackageReference Include="DevExpress.ExpressApp.Blazor" Version="25.2.*" />
-    <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" Version="25.2.*" />
-    <PackageReference Include="DevExpress.ExpressApp.Validation.Blazor" Version="25.2.*" />
+    <PackageReference Include="DevExpress.Drawing.Skia" Version="25.2.3" />
+    <PackageReference Include="DevExpress.ExpressApp.Blazor" Version="25.2.3" />
+    <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" Version="25.2.3" />
+    <PackageReference Include="DevExpress.ExpressApp.StateMachine" Version="25.2.3" />
+    <PackageReference Include="DevExpress.ExpressApp.Validation.Blazor" Version="25.2.3" />
     
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MINI_CRM_SAMIR_NAKRANI.Module\MINI_CRM_SAMIR_NAKRANI.Module.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="UnusableNodes.xml">
+      <DependentUpon>Model.xafml</DependentUpon>
+    </None>
   </ItemGroup>
 </Project>

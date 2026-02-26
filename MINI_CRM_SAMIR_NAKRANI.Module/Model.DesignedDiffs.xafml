@@ -1,8 +1,169 @@
-﻿<?xml version="1.0" ?>
-<Application Title="MINI_CRM_SAMIR_NAKRANI">
-  <Options>
-    <LayoutManagerOptions RequiredFieldMark="*" />
-  </Options>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <SchemaModules>
+    <SchemaModule Name="SystemModule" Version="25.2.3.0" IsNewNode="True" />
+  </SchemaModules>
   <Views>
+    <DetailView Id="Account_DetailView">
+      <Layout>
+        <TabbedGroup Id="TabbedGroup" IsNewNode="True">
+          <LayoutGroup Id="Details" Caption="Details" RelativeSize="100" IsNewNode="True">
+            <LayoutGroup Id="Account_Section" Caption="ACCOUNT" RelativeSize="100" GroupBoxStyle="Box" IsNewNode="True">
+              <LayoutItem Id="AccountName" ViewItem="AccountName" IsNewNode="True" />
+              <LayoutItem Id="Fax" ViewItem="Fax" IsNewNode="True" />
+              <LayoutItem Id="ParentAccount" ViewItem="ParentAccount" IsNewNode="True" />
+              <LayoutItem Id="Phone" ViewItem="Phone" IsNewNode="True" />
+              <LayoutItem Id="ReadableName" ViewItem="ReadableName" IsNewNode="True" />
+              <LayoutItem Id="TickerSymbol" ViewItem="TickerSymbol" IsNewNode="True" />
+              <LayoutItem Id="Website" ViewItem="Website" IsNewNode="True" />
+            </LayoutGroup>
+            <LayoutGroup Id="Address_Section" Caption="ADDRESS" RelativeSize="100" GroupBoxStyle="Box" IsNewNode="True">
+              <LayoutItem Id="Address1" ViewItem="Address1" IsNewNode="True" />
+              <LayoutItem Id="Address2" ViewItem="Address2" IsNewNode="True" />
+            </LayoutGroup>
+            <LayoutGroup Id="PrimaryContact_Section" Caption="PRIMARY CONTACT" RelativeSize="100" GroupBoxStyle="Box" IsNewNode="True">
+              <LayoutItem Id="PrimaryContact" ViewItem="PrimaryContact" IsNewNode="True" />
+            </LayoutGroup>
+          </LayoutGroup>
+          <LayoutGroup Id="Related" Caption="Related" RelativeSize="100" IsNewNode="True">
+            <LayoutItem Id="Activities" ViewItem="Activities" IsNewNode="True" />
+            <LayoutItem Id="ChildAccounts" ViewItem="ChildAccounts" IsNewNode="True" />
+          </LayoutGroup>
+        </TabbedGroup>
+      </Layout>
+    </DetailView>
+    <DetailView Id="Contact_DetailView">
+      <Layout>
+        <TabbedGroup Id="TabbedGroup" IsNewNode="True">
+          <LayoutGroup Id="Details" Caption="Details" RelativeSize="100" IsNewNode="True">
+            <LayoutGroup Id="Account_Info" Caption="ACCOUNT" RelativeSize="100" GroupBoxStyle="Box" IsNewNode="True">
+              <LayoutItem Id="Account" ViewItem="Account" IsNewNode="True" />
+            </LayoutGroup>
+            <LayoutGroup Id="ContactInfo_Section" Caption="CONTACT INFORMATION" RelativeSize="100" GroupBoxStyle="Box" IsNewNode="True">
+              <LayoutItem Id="Email" ViewItem="Email" IsNewNode="True" />
+              <LayoutItem Id="Mobile" ViewItem="Mobile" IsNewNode="True" />
+              <LayoutItem Id="Phone" ViewItem="Phone" IsNewNode="True" />
+              <LayoutItem Id="Title" ViewItem="Title" IsNewNode="True" />
+            </LayoutGroup>
+            <LayoutGroup Id="Names_Info" Caption="NAMES" RelativeSize="100" GroupBoxStyle="Box" IsNewNode="True">
+              <LayoutItem Id="FirstName" ViewItem="FirstName" IsNewNode="True" />
+              <LayoutItem Id="FullName" ViewItem="FullName" IsNewNode="True" />
+              <LayoutItem Id="LastName" ViewItem="LastName" IsNewNode="True" />
+              <LayoutItem Id="MiddleName" ViewItem="MiddleName" IsNewNode="True" />
+              <LayoutItem Id="ReadableFirstName" ViewItem="ReadableFirstName" IsNewNode="True" />
+              <LayoutItem Id="ReadableLastName" ViewItem="ReadableLastName" IsNewNode="True" />
+              <LayoutItem Id="ReadableMiddleName" ViewItem="ReadableMiddleName" IsNewNode="True" />
+            </LayoutGroup>
+          </LayoutGroup>
+          <LayoutGroup Id="Related" Caption="Related" RelativeSize="100" IsNewNode="True">
+            <LayoutItem Id="Activities" ViewItem="Activities" IsNewNode="True" />
+            <LayoutItem Id="Leads" ViewItem="Leads" IsNewNode="True" />
+          </LayoutGroup>
+        </TabbedGroup>
+      </Layout>
+    </DetailView>
+    <DetailView Id="Lead_DetailView">
+      <Layout>
+        <TabbedGroup Id="MainTabs" Index="0" RelativeSize="100" IsNewNode="True">
+          <LayoutGroup Id="Related" Caption="Related" RelativeSize="0" ShowCaption="True" Direction="Horizontal" Index="0" IsNewNode="True">
+            <TabbedGroup Id="Lead_AccountContact_Tabs" Index="3" RelativeSize="30" IsNewNode="True">
+              <LayoutGroup Id="Tab_Account" Caption="Account" IsNewNode="True">
+                <LayoutItem Id="ParentAccount" ViewItem="ParentAccount" IsNewNode="True" />
+              </LayoutGroup>
+              <LayoutGroup Id="Tab_Contact" Caption="Contact" IsNewNode="True">
+                <LayoutItem Id="ParentContact" ViewItem="ParentContact" IsNewNode="True" />
+              </LayoutGroup>
+            </TabbedGroup>
+          </LayoutGroup>
+          <LayoutGroup Id="Summary" Caption="Summary" RelativeSize="100" ShowCaption="True" Index="1" IsNewNode="True">
+            <LayoutGroup Id="SummaryBody" RelativeSize="100" Direction="Horizontal" ShowCaption="False" Index="0" IsNewNode="True">
+              <LayoutGroup Id="LeftSide" RelativeSize="64.54741379310344" ShowCaption="False" Index="0" IsNewNode="True">
+                <LayoutItem Id="Subject" ViewItem="Subject" Index="0" RelativeSize="11.439114391143912" IsNewNode="True" />
+                <LayoutGroup Id="Tab_Contact" ShowCaption="True" Caption="Contact" Index="1" RelativeSize="56.27306273062731" IsNewNode="True">
+                  <LayoutItem Id="Email" ViewItem="Email" Index="0" RelativeSize="11.428571428571429" IsNewNode="True" />
+                  <LayoutItem Id="FirstName" ViewItem="FirstName" Index="1" RelativeSize="8.571428571428571" IsNewNode="True" />
+                  <LayoutItem Id="FullName" ViewItem="FullName" Index="2" RelativeSize="8.571428571428571" IsNewNode="True" />
+                  <LayoutItem Id="LastName" ViewItem="LastName" Index="3" RelativeSize="8.571428571428571" IsNewNode="True" />
+                  <LayoutItem Id="MiddleName" ViewItem="MiddleName" Index="4" RelativeSize="8.571428571428571" IsNewNode="True" />
+                  <LayoutItem Id="Mobile" ViewItem="Mobile" Index="5" RelativeSize="8.571428571428571" IsNewNode="True" />
+                  <LayoutItem Id="Phone" ViewItem="Phone" Index="6" RelativeSize="8.571428571428571" IsNewNode="True" />
+                  <LayoutItem Id="ReadableFirstName" ViewItem="ReadableFirstName" Index="7" RelativeSize="8.571428571428571" IsNewNode="True" />
+                  <LayoutItem Id="ReadableLastName" ViewItem="ReadableLastName" Index="8" RelativeSize="8.571428571428571" IsNewNode="True" />
+                  <LayoutItem Id="ReadableMiddleName" ViewItem="ReadableMiddleName" Index="9" RelativeSize="8.571428571428571" IsNewNode="True" />
+                  <LayoutItem Id="Title" ViewItem="Title" Index="10" RelativeSize="11.428571428571429" IsNewNode="True" />
+                </LayoutGroup>
+                <TabbedGroup Id="LeftInnerTabs" RelativeSize="32.28782287822878" Index="2" IsNewNode="True">
+                  <LayoutGroup Id="Tab_Company" Caption="Company" RelativeSize="100" ShowCaption="True" Index="0" IsNewNode="True">
+                    <LayoutItem Id="Address1" ViewItem="Address1" Index="0" RelativeSize="23.529411764705884" IsNewNode="True" />
+                    <LayoutItem Id="Address2" ViewItem="Address2" Index="1" RelativeSize="17.647058823529413" IsNewNode="True" />
+                    <LayoutItem Id="Company" ViewItem="Company" Index="2" RelativeSize="17.647058823529413" IsNewNode="True" />
+                    <LayoutItem Id="ReadableCompanyName" ViewItem="ReadableCompanyName" Index="3" RelativeSize="17.647058823529413" IsNewNode="True" />
+                    <LayoutItem Id="Website" ViewItem="Website" Index="4" RelativeSize="23.529411764705884" IsNewNode="True" />
+                  </LayoutGroup>
+                </TabbedGroup>
+              </LayoutGroup>
+              <LayoutGroup Id="RightSide" RelativeSize="35.452586206896555" ShowCaption="False" Index="1" IsNewNode="True">
+                <LayoutGroup Id="Activity_Box" Caption="ACTIVITY" RelativeSize="100" GroupBoxStyle="Box" ShowCaption="False" Index="0" IsNewNode="True">
+                  <LayoutGroup Id="Activities_Group" ShowCaption="True" Caption="Activities" Index="0" RelativeSize="100" IsNewNode="True">
+                    <LayoutItem Id="Activities" ViewItem="Activities" Index="0" RelativeSize="100" IsNewNode="True" />
+                  </LayoutGroup>
+                </LayoutGroup>
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+        </TabbedGroup>
+        <LayoutGroup Id="Main" RelativeSize="8.217054263565892" Removed="True">
+          <LayoutGroup Id="Activities_Group" Direction="Vertical" RelativeSize="96.22641509433963" Caption="Activities" Removed="True">
+            <LayoutItem Id="Activities" RelativeSize="100" Removed="True" />
+          </LayoutGroup>
+          <LayoutGroup Id="SimpleEditors" RelativeSize="100" Removed="True">
+            <LayoutGroup Id="Lead" RelativeSize="100" Removed="True">
+              <LayoutGroup Id="Lead_col1" RelativeSize="50">
+                <LayoutItem Id="FirstName" RelativeSize="17.391304347826086" />
+                <LayoutItem Id="LastName" RelativeSize="13.043478260869565" />
+                <LayoutItem Id="MiddleName" RelativeSize="13.043478260869565" />
+                <LayoutItem Id="ReadableFirstName" RelativeSize="13.043478260869565" />
+                <LayoutItem Id="ReadableLastName" RelativeSize="13.043478260869565" />
+                <LayoutItem Id="ReadableMiddleName" RelativeSize="13.043478260869565" />
+                <LayoutItem Id="Title" RelativeSize="17.391304347826086" />
+              </LayoutGroup>
+              <LayoutGroup Id="Lead_col2" RelativeSize="50">
+                <LayoutItem Id="Company" RelativeSize="13.043478260869565" />
+                <LayoutItem Id="Email" RelativeSize="13.043478260869565" />
+                <LayoutItem Id="FullName" RelativeSize="17.391304347826086" />
+                <LayoutItem Id="Mobile" RelativeSize="13.043478260869565" />
+                <LayoutItem Id="Phone" RelativeSize="17.391304347826086" />
+                <LayoutItem Id="ReadableCompanyName" RelativeSize="13.043478260869565" />
+                <LayoutItem Id="Website" RelativeSize="13.043478260869565" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+          <LayoutGroup Id="SizeableEditors" RelativeSize="98.11320754716981" Caption="SizeableEditors" Removed="True">
+            <LayoutItem Id="Address1" RelativeSize="50" Index="0" Removed="True" />
+            <LayoutItem Id="Address2" RelativeSize="100" Index="0" Removed="True" />
+            <LayoutItem Id="Subject" RelativeSize="34.48275862068966" Removed="True" />
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+    <ListView Id="Lead_ListView" ShowAutoFilterRow="False" ShowFindPanel="False">
+      <Columns>
+        <ColumnInfo Id="Address1" Removed="True" />
+        <ColumnInfo Id="Address2" Removed="True" />
+        <ColumnInfo Id="Email" Removed="True" />
+        <ColumnInfo Id="FullName" Removed="True" />
+        <ColumnInfo Id="Mobile" Removed="True" />
+        <ColumnInfo Id="Oid" Removed="True" />
+        <ColumnInfo Id="ParentAccount" Removed="True" />
+        <ColumnInfo Id="ParentContact" Removed="True" />
+        <ColumnInfo Id="Phone" Removed="True" />
+        <ColumnInfo Id="ReadableCompanyName" Removed="True" />
+        <ColumnInfo Id="ReadableFirstName" Removed="True" />
+        <ColumnInfo Id="ReadableLastName" Removed="True" />
+        <ColumnInfo Id="ReadableMiddleName" Removed="True" />
+        <ColumnInfo Id="Subject" Removed="True" />
+        <ColumnInfo Id="Title" Removed="True" />
+      </Columns>
+    </ListView>
   </Views>
 </Application>

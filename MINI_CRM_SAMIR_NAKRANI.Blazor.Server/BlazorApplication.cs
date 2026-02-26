@@ -14,6 +14,8 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server
         {
             ApplicationName = "MINI_CRM_SAMIR_NAKRANI";
             CheckCompatibilityType = DevExpress.ExpressApp.CheckCompatibilityType.DatabaseSchema;
+            // Force database recreation in debug mode
+            DatabaseUpdateMode = DatabaseUpdateMode.UpdateDatabaseAlways;
             DatabaseVersionMismatch += MINI_CRM_SAMIR_NAKRANIBlazorApplication_DatabaseVersionMismatch;
         }
         protected override void OnSetupStarted()

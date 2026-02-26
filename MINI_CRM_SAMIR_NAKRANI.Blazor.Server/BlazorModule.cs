@@ -23,6 +23,10 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server
         {
             return ModuleUpdater.EmptyModuleUpdaters;
         }
+        protected override IEnumerable<Type> GetDeclaredExportedTypes()
+        {
+            return base.GetDeclaredExportedTypes();
+        }
         public override void Setup(XafApplication application)
         {
             base.Setup(application);

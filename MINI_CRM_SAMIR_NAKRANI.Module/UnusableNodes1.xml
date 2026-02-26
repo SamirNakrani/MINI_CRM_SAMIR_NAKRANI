@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <Views Id="Views">
+    <DetailView Id="Account_DetailView">
+      <Layout Id="Layout">
+        <TabbedGroup Id="TabbedGroup">
+          <LayoutGroup Id="Details">
+            <LayoutGroup Id="Address_Info" GroupBoxStyle="Box" />
+          </LayoutGroup>
+          <LayoutGroup Id="Summary">
+            <LayoutGroup Id="Account_Info" GroupBoxStyle="Box" />
+            <LayoutGroup Id="PrimaryContact_Info" GroupBoxStyle="Box" />
+          </LayoutGroup>
+        </TabbedGroup>
+      </Layout>
+    </DetailView>
+    <DetailView Id="Contact_DetailView">
+      <Layout Id="Layout">
+        <TabbedGroup Id="TabbedGroup">
+          <LayoutGroup Id="Summary">
+            <LayoutGroup Id="Account_Info" GroupBoxStyle="Box" />
+            <LayoutGroup Id="Contact_Info" GroupBoxStyle="Box" />
+          </LayoutGroup>
+        </TabbedGroup>
+      </Layout>
+    </DetailView>
+    <DetailView Id="Lead_DetailView">
+      <Layout Id="Layout">
+        <TabbedGroup Id="TabbedGroup">
+          <LayoutGroup Id="Summary">
+            <LayoutGroup Id="LeftColumn">
+              <LayoutGroup Id="Company_Box" GroupBoxStyle="Box" />
+              <LayoutGroup Id="Contact_Box" GroupBoxStyle="Box" />
+              <LayoutGroup Id="Lead_Box" GroupBoxStyle="Box" />
+            </LayoutGroup>
+            <LayoutGroup Id="RightColumn">
+              <LayoutGroup Id="Activities_Box" GroupBoxStyle="Box" />
+            </LayoutGroup>
+          </LayoutGroup>
+        </TabbedGroup>
+      </Layout>
+    </DetailView>
+  </Views>
+</Application>

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
@@ -12,18 +12,47 @@
     <None Remove="Model.DesignedDiffs.xafml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Model.DesignedDiffs.xafml" />
+    <EmbeddedResource Include="Model.DesignedDiffs.xafml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DevExpress.ExpressApp" Version="25.2.*" />
-    <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" Version="25.2.*" />
-    <PackageReference Include="DevExpress.ExpressApp.ConditionalAppearance" Version="25.2.*" />
-    <PackageReference Include="DevExpress.ExpressApp.Validation" Version="25.2.*" />
-    <PackageReference Include="DevExpress.ExpressApp.Xpo" Version="25.2.*" />
-    <PackageReference Include="DevExpress.Persistent.Base" Version="25.2.*" />
-    <PackageReference Include="DevExpress.Persistent.BaseImpl.Xpo" Version="25.2.*" />
+    <PackageReference Include="DevExpress.ExpressApp" Version="25.2.3" />
+    <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" Version="25.2.3" />
+    <PackageReference Include="DevExpress.ExpressApp.ConditionalAppearance" Version="25.2.3" />
+    <PackageReference Include="DevExpress.ExpressApp.StateMachine" Version="25.2.3" />
+    <PackageReference Include="DevExpress.ExpressApp.Validation" Version="25.2.3" />
+    <PackageReference Include="DevExpress.ExpressApp.Xpo" Version="25.2.3" />
+    <PackageReference Include="DevExpress.Persistent.Base" Version="25.2.3" />
+    <PackageReference Include="DevExpress.Persistent.BaseImpl.Xpo" Version="25.2.3" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
     
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="UnusableNodes.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+    </None>
+    <None Update="UnusableNodes1.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+    </None>
+    <None Update="UnusableNodes2.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+    </None>
+    <None Update="UnusableNodes3.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+    </None>
+    <None Update="UnusableNodes4.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+    </None>
+    <None Update="UnusableNodes5.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+    </None>
+    <None Update="UnusableNodes6.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+    </None>
+    <None Update="UnusableNodes7.xml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+    </None>
   </ItemGroup>
 </Project>
