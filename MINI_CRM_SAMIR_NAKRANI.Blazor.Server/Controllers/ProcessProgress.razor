@@ -3,58 +3,80 @@
 @using MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
 @implements IDisposable
 
-<div class="lead-status-wrapper">
-    <div class="lead-status-container">
-        @foreach (ProcessState stage in Enum.GetValues(typeof(ProcessState)))
-        {
-            <div class="lead-status-step">
-                <div class="lead-status-item
-                               @(IsCompleted(stage) ? "lead-status-completed" : "")">
-                    <DxCheckBox Checked="@IsCompleted(stage)"
-                                Enabled="true"
-                                CssClass="lead-status-checkbox" />
+@if (Lead != null)
+{
+    <div class="lead-status-wrapper">
+        <div class="lead-status-container">
+            @foreach (ProcessState stage in Enum.GetValues(typeof(ProcessState)))
+            {
+                <div class="lead-status-step">
+                    <div class="lead-status-item
+                                        @(IsCompleted(stage) ? "lead-status-completed" : "")
+                                        @(SelectedStage == stage ? "lead-status-selected" : "")"
+                         @onclick="() => OnStageClicked(stage)">
 
-                    <span class="lead-status-text">@stage</span>
+                        <DxCheckBox Checked="@IsCompleted(stage)"
+                                    ReadOnly="true"
+                                    CssClass="lead-status-checkbox" />
+
+                        <span class="lead-status-text">@stage</span>
+                    </div>
+
+                    @if (ShowCard && PopupStage == stage)
+                    {
+                        <div class="stage-card">
+                            <div class="stage-card-header">@stage</div>
+
+                            <div class="stage-card-actions">
+                                <DxButton Text="Previous"
+                                          Enabled="@CanGoPrevious"
+                                          Click="GoPrevious" style="margin-right:20px;" />
+
+                                <DxButton Text="Next"
+                                          Enabled="@CanGoNext"
+                                          RenderStyle="ButtonRenderStyle.Primary"
+                                          CssClass="ml-2"
+                                          Click="GoNext" />
+                            </div>
+                        </div>
+                    }
+
+                    @if (stage != ProcessState.Closed)
+                    {
+                        <div class="lead-status-connector @(IsConnectorCompleted(stage) ? "completed" : "")"></div>
+                    }
                 </div>
-
-                @if (stage != ProcessState.Closed)
-                {
-                    <div class="lead-status-connector"></div>
-                }
-            </div>
-        }
+            }
+        </div>
     </div>
-</div>
+}
 
 @code {
     [Parameter]
     public LeadStatusBarViewItem ViewItem { get; set; }
 
     private Lead Lead => ViewItem?.View?.CurrentObject as Lead;
+
     private ProcessState? SelectedStage;
+    private ProcessState PopupStage;
+    private bool ShowCard;
 
     protected override void OnInitialized()
     {
-        base.OnInitialized();
         SubscribeToEvents();
         UpdateSelectedStage();
     }
 
-    protected override void OnAfterRender(bool firstRender)
+    public void RefreshUI()
     {
-        base.OnAfterRender(firstRender);
-        if (!firstRender)
-        {
-            UpdateSelectedStage();
-        }
+        UpdateSelectedStage();
+        InvokeAsync(StateHasChanged);
     }
 
     private void SubscribeToEvents()
     {
         if (ViewItem?.View?.ObjectSpace != null)
-        {
             ViewItem.View.ObjectSpace.ObjectChanged += ObjectSpace_ObjectChanged;
-        }
     }
 
     private void ObjectSpace_ObjectChanged(object sender, ObjectChangedEventArgs e)
@@ -69,115 +91,210 @@
     private void UpdateSelectedStage()
     {
         if (Lead != null)
-        {
             SelectedStage = Lead.State;
-        }
     }
 
     private bool IsCompleted(ProcessState stage)
     {
-        if (stage == ProcessState.Open)
-            return true;
-
-        if (Lead == null)
-            return false;
-
-        return Lead.State >= stage;
+        return Lead != null && Lead.State >= stage;
     }
 
-    public void RefreshUI()
+    private void OnStageClicked(ProcessState stage)
     {
-        UpdateSelectedStage();
-        InvokeAsync(StateHasChanged);
+        if (Lead == null || stage != Lead.State)
+            return;
+
+        if (ShowCard && PopupStage == stage)
+        {
+            ShowCard = false;
+            return;
+        }
+
+        PopupStage = stage;
+        ShowCard = true;
+    }
+    private int CurrentIndex => (int)Lead.State;
+    private int ClickedIndex => (int)PopupStage;
+
+    private bool IsCurrentStage => ClickedIndex == CurrentIndex;
+
+    private bool CanGoNext =>
+        IsCurrentStage &&
+        CurrentIndex < Enum.GetValues(typeof(ProcessState)).Length - 1;
+
+    private bool CanGoPrevious =>
+        IsCurrentStage &&
+        CurrentIndex > 0;
+
+    private void GoNext()
+    {
+        if (!CanGoNext) return;
+
+        var maxIndex = Enum.GetValues(typeof(ProcessState)).Length - 1;
+        if (CurrentIndex < maxIndex)
+            ChangeState((ProcessState)(CurrentIndex + 1));
     }
 
+    private void GoPrevious()
+    {
+        if (!CanGoPrevious) return;
+
+        if (ClickedIndex < CurrentIndex)
+            ChangeState((ProcessState)ClickedIndex);
+        else
+            ChangeState((ProcessState)(CurrentIndex - 1));
+    }
+
+    private void ChangeState(ProcessState newState)
+    {
+        if (Lead == null)
+            return;
+
+        Lead.State = newState;
+        ShowCard = false;
+    }
+    private bool IsConnectorCompleted(ProcessState stage)
+    {
+           return Lead != null && Lead.State > stage;
+    }
     public void Dispose()
     {
         if (ViewItem?.View?.ObjectSpace != null)
-        {
             ViewItem.View.ObjectSpace.ObjectChanged -= ObjectSpace_ObjectChanged;
-        }
     }
 }
+
 <style>
-    
-.lead-status-wrapper {
-    padding: 20px 40px;
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
+    .lead-status-wrapper {
+        padding: 24px 40px;
+        background: linear-gradient(180deg, #f8f9fa, #ffffff);
+        border-radius: 12px;
+        margin-bottom: 20px;
+    }
 
-.lead-status-container {
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
+    /* Container */
+    .lead-status-container {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
 
-.lead-status-step {
-    display: flex;
-    align-items: center;
-    flex: 1;
-}
+    /* Each step */
+    .lead-status-step {
+        position: relative;
+        display: flex;
+        align-items: center;
+        flex: 1;
+    }
 
-.lead-status-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 16px;
-    background-color: #ffffff;
-    border: 2px solid #dee2e6;
-    border-radius: 6px;
-    transition: all 0.25s ease;
-    white-space: nowrap;
-}
+    /* Status box */
+    .lead-status-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 18px;
+        background: #fff;
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+    }
 
-.lead-status-completed {
-    background-color: #d1e7dd;
-    border-color: #0f5132;
-}
+        /* Hover */
+        .lead-status-item:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0,0,0,.08);
+        }
 
-.lead-status-selected {
-    background-color: #cfe2ff;
-    border-color: #084298;
-}
+    /* Completed */
+    .lead-status-completed {
+        background-color: #d1e7dd;
+        border-color: #0f5132;
+    }
 
-.lead-status-text {
-    font-weight: 500;
-    color: #495057;
-}
+    /* Current */
+    .lead-status-selected {
+        background-color: #cfe2ff;
+        border-color: #084298;
+        box-shadow: 0 0 0 3px rgba(13,110,253,.15);
+    }
 
-.lead-status-completed .lead-status-text {
-    color: #0f5132;
-}
+    /* Text colors */
+    .lead-status-completed .lead-status-text {
+        color: #0f5132;
+        font-weight: 600;
+    }
 
-.lead-status-selected .lead-status-text {
-    color: #084298;
-    font-weight: 600;
-}
+    .lead-status-selected .lead-status-text {
+        color: #084298;
+        font-weight: 700;
+    }
 
-.lead-status-connector {
-    flex: 1;
-    height: 3px;
-    margin: 0 12px;
-    background-color: #dee2e6;
-    border-radius: 2px;
-}
+    .lead-status-connector {
+        position: relative;
+        flex: 1;
+        height: 4px;
+        margin: 0 14px;
+        background-color: #e9ecef;
+        border-radius: 4px;
+        overflow: hidden;
+    }
 
-.lead-status-completed + .lead-status-connector {
-    background-color: #0f5132;
-}
+        /* Progress line */
+        .lead-status-connector::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #198754, #20c997);
+            transition: width 0.6s ease;
+        }
 
-/* DevExpress CheckBox */
-.lead-status-checkbox {
-    pointer-events: none;
-}
+        /* Animate ONLY when state advances */
+        .lead-status-connector.completed::after {
+            width: 100%;
+        }
 
-.lead-status-completed .dx-checkbox-icon {
-    color: #0f5132;
-}
+    /* ---------- CARD ---------- */
+    .stage-card {
+        position: absolute;
+        top: 64px;
+        left: 0;
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        padding: 14px;
+        width: 240px;
+        box-shadow: 0 10px 25px rgba(0,0,0,.18);
+        z-index: 10;
+        animation: slideFadeIn 0.25s ease;
+    }
 
-.lead-status-selected .dx-checkbox-icon {
-    color: #084298;
-}
+    @@keyframes slideFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-6px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .stage-card-header {
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .stage-card-actions {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .lead-status-checkbox {
+        pointer-events: none;
+    }
 </style>

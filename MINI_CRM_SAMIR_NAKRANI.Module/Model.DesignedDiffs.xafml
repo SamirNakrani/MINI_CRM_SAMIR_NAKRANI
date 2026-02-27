@@ -144,9 +144,6 @@
             <LayoutItem Id="Subject" RelativeSize="34.48275862068966" Removed="True" />
           </LayoutGroup>
         </LayoutGroup>
-        <LayoutGroup Id="StatusBarGroup" IsNewNode="True">
-          <LayoutItem Id="LeadStatusProgressBar" IsNewNode="True" />
-        </LayoutGroup>
       </Layout>
     </DetailView>
     <ListView Id="Lead_ListView" ShowAutoFilterRow="False" ShowFindPanel="False">

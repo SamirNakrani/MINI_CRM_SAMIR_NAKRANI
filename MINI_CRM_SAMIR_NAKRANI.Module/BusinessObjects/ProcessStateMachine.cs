@@ -31,7 +31,17 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
             proposed.Transitions.Add(new Transition(closed));
             proposed.Transitions.Add(new Transition(developed));
             closed.Transitions.Add(new Transition(proposed));
+            startState.Transitions.Add(
+    new Transition(qualified) { Caption = "Qualify Lead" }
+);
 
+            qualified.Transitions.Add(
+                new Transition(developed) { Caption = "Start Development" }
+            );
+         
+            qualified.Transitions.Add(
+                new Transition(startState) { Caption = "Reopen Lead" }
+            );
             States.Add(startState);
             States.Add(qualified);
             States.Add(developed);
