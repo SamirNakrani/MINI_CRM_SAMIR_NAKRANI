@@ -7,7 +7,9 @@ using DevExpress.ExpressApp.Model.Core;
 using DevExpress.ExpressApp.Model.DomainLogics;
 using DevExpress.ExpressApp.Model.NodeGenerators;
 using DevExpress.ExpressApp.Updating;
+using DevExpress.ExpressApp.Utils;
 using DevExpress.Persistent.BaseImpl;
+using MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Editors.CustomActivityList;
 using System.ComponentModel;
 
 namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server
@@ -18,6 +20,10 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server
     {
         public MINI_CRM_SAMIR_NAKRANIBlazorModule()
         {
+            DataAccessModeHelper.RegisterEditorSupportedModes(
+            typeof(BlazorCustomActivityListEditor),
+            new[] { CollectionSourceDataAccessMode.Client }
+        );
         }
         public override IEnumerable<ModuleUpdater> GetModuleUpdaters(IObjectSpace objectSpace, Version versionFromDB)
         {

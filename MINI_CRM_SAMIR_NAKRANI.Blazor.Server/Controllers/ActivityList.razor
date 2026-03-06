@@ -1,0 +1,565 @@
+﻿@using MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
+@using MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Editors.CustomActivityList
+@using DevExpress.Blazor
+@using System.Globalization
+
+<div class="timeline-container">
+    @if (Data?.Any() == true)
+    {
+        var firstItem = Data.First();
+        var lastItem = Data.Last();
+        var itemList = Data.ToList();
+
+        <div class="timeline">
+            @foreach (var item in itemList)
+            {
+                var isFirstItem = item == firstItem;
+                var isLastItem = item == lastItem;
+
+                <div class="timeline-item @(isLastItem ? "timeline-last" : "")">
+
+                    <!-- LEFT COLUMN -->
+                    <div class="timeline-left-column">
+
+                        @if (isFirstItem)
+                        {
+                            <div class="timeline-arrow">
+                                <i class="bi bi-arrow-up"></i>
+                            </div>
+                        }
+
+                        <div class="activity-date-left">
+                            @if (item.StartOn > DateTime.MinValue)
+                            {
+                                <span>@item.StartOn.ToString("M/d/yyyy")</span>
+                                <span class="time-text">@item.StartOn.ToString("h:mm tt", CultureInfo.CurrentCulture)</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Date not set</span>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- RIGHT COLUMN -->
+                    <div class="timeline-right-column">
+
+                        <div class="timeline-line @(isLastItem ? "timeline-line-last" : "")">
+
+                            <div class="timeline-icon @GetActivityIconClass(item)">
+
+                                @if (item is PhoneActivity)
+                                {
+                                    <i class="bi bi-telephone-fill"></i>
+                                }
+                                else if (item is AppointmentActivity)
+                                {
+                                    <i class="bi bi-calendar-event-fill"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-circle-fill"></i>
+                                }
+
+                            </div>
+
+                            @if (isLastItem)
+                            {
+                                <div class="timeline-end-dot"></div>
+                            }
+                        </div>
+
+                        <div class="timeline-content">
+
+                        
+
+                            <div class="activity-card"
+                               
+                                 @onclick:stopPropagation="false">
+
+                                
+
+                                <div class="card-body-content">
+
+                                    <h6 class="activity-subject">@item.Subject</h6>
+
+                                    @if (item is PhoneActivity phone)
+                                    {
+                                        <p class="activity-detail">
+                                            <strong>@phone.Description</strong>
+                                        </p>
+                                    }
+
+                                    else if (item is AppointmentActivity app)
+                                    {
+                                        <p class="activity-detail">
+                                            <strong>Location:</strong> @app.Location
+                                        </p>
+
+                                        @if (app.EndOn > DateTime.MinValue)
+                                        {
+                                            <p class="activity-detail">
+                                                <strong>End:</strong>
+                                                @app.EndOn.ToString("MMM d, yyyy HH:mm", CultureInfo.CurrentCulture)
+                                            </p>
+                                        }
+
+                                        @if (app.AllDay)
+                                        {
+                                            <span class="badge-pill all-day-badge">
+                                                <i class="bi bi-clock"></i> All Day Event
+                                            </span>
+                                        }
+                                    }
+
+                                </div>
+                                <div class="card-footer">
+
+                                    <div class="footer-left">
+                                        <DxCheckBox Checked="@IsSelected(item)"
+                                                    CheckedChanged="@((bool v) => OnSelectionChanged(item, v))"
+                                                    @onclick:stopPropagation="true" CssClass="chkbox" />
+                                    </div>
+
+                                    <div class="footer-right">
+                                        <button class="edit-btn"
+                                                @onclick="() => OnCardClick(item)"
+                                                @onclick:stopPropagation="true">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center text-muted p-5">
+            <p>No activities found.</p>
+        </div>
+    }
+</div>
+
+@code {
+
+    [Parameter] public IEnumerable<Activity> Data { get; set; } = Enumerable.Empty<Activity>();
+    [Parameter] public EventCallback<Activity> ItemClick { get; set; }
+    [Parameter] public EventCallback<IEnumerable<Activity>> SelectionChanged { get; set; }
+    [Parameter] public EventCallback<bool> HasSelectionChanged { get; set; }
+    private HashSet<Activity> _selected = new();
+
+    private bool IsSelected(Activity item) => _selected.Contains(item);
+
+    private string GetActivityIconClass(Activity item)
+    {
+        return item switch
+        {
+            PhoneActivity => "icon-phone",
+            AppointmentActivity => "icon-appointment",
+            _ => "icon-default"
+        };
+    }
+
+    private async Task OnSelectionChanged(Activity item, bool selected)
+    {
+        if (selected)
+            _selected.Add(item);
+        else
+            _selected.Remove(item);
+
+        await SelectionChanged.InvokeAsync(_selected);
+        await HasSelectionChanged.InvokeAsync(_selected.Any());
+    }
+    private async Task OnCardClick(Activity item)
+    {
+        _selected.Clear();
+        _selected.Add(item);
+        
+        await SelectionChanged.InvokeAsync(_selected);
+        await ItemClick.InvokeAsync(item);
+    }
+}
+
+    <style>
+        /* General Reset */
+        .timeline-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        .timeline-icon i {
+            font-size: 15px;
+        }
+
+        .timeline-arrow i {
+            font-size: 40px;
+        }
+
+        .edit-icon {
+        font-size: 14px;
+       }
+        .timeline {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        /* TIMELINE ITEM - FLEX LAYOUT */
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            position: relative;
+            gap: 0;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        /* LEFT COLUMN: 20% FOR DATE */
+        .timeline-left-column {
+            width: 20%;
+            padding-right: 2rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100px;
+        }
+
+        /* ARROW FOR FIRST ITEM */
+        .timeline-arrow {
+            position: absolute;
+            top: -35px;
+            left: 100%;
+            transform: translateX(-50%);
+            font-size: 44px;
+            color: #6c757d;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        /* DATE DISPLAY ON LEFT */
+        .activity-date-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding-top: 0.5rem;
+        }
+
+        .activity-date-left span {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #495057;
+            line-height: 1.3;
+        }
+
+        .activity-date-left .time-text {
+            font-size: 0.75rem;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        /* RIGHT COLUMN: 80% FOR TIMELINE & CONTENT */
+        .timeline-right-column {
+            width: 80%;
+            display: flex;
+            gap: 2.5rem;
+            position: relative;
+        }
+
+        /* VERTICAL TIMELINE LINE */
+        .timeline-line {
+            position: relative;
+            width: 2px;
+            background-color: #dee2e6;
+            flex-shrink: 0;
+        }
+
+        .timeline-line.timeline-line-last {
+            /* Shortened for the last item */
+        }
+
+        /* TIMELINE ICON - ABSOLUTE POSITIONED TO OVERLAY LINE */
+        .timeline-icon {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            background-color: #fff;
+            border: 3px solid #28a745;
+            color: #28a745;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        font-size: 15px;
+            z-index: 10;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .timeline-icon.icon-phone {
+            border-color: #198754;
+            color: #198754;
+        }
+
+        .timeline-icon.icon-appointment {
+            border-color: #ffc107;
+            color: #ffc107;
+        }
+
+        .timeline-icon.icon-default {
+            border-color: #6c757d;
+            color: #6c757d;
+        }
+
+        /* LAST ITEM ICON STYLING */
+        .timeline-last .timeline-icon {
+            border-color: #6c757d;
+            color: #6c757d;
+        }
+
+        /* END DOT FOR LAST ITEM */
+        .timeline-end-dot {
+            position: absolute;
+            left: 50%;
+            bottom: -10px;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 14px;
+            background-color: #6c757d;
+            border-radius: 50%;
+            z-index: 11;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        /* TIMELINE CONTENT */
+        .timeline-content {
+            flex: 1;
+            padding-top: 0.5rem;
+        }
+
+        .activity-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        /* ACTIVITY CARD */
+        .activity-card {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border: 1px solid #e9ecef;
+            overflow: hidden;
+        }
+
+        .activity-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+            border-color: #dee2e6;
+        }
+
+        /* CARD TOP (TYPE BADGE + ACTION BUTTON) */
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        /* CARD FOOTER */
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #e9ecef;
+    background: #fafafa;
+}
+
+    .footer-left {
+        display: flex;
+        align-items: center;
+        padding: 5px 10px;
+        border-radius: 4px;
+        transition: background 0.2s ease;
+    }
+
+        .footer-left:hover {
+            background: grey;
+        }
+
+            .footer-left:hover .dxbl-checkbox-icon {
+                border-color: white !important;
+            }
+
+            .footer-left:hover .dxbl-checkbox-checked .dxbl-checkbox-icon {
+                background-color: white;
+            }
+        .footer-right {
+        display: flex;
+        align-items: center;
+        padding: 13px 10px;
+        border-radius: 4px;
+        transition: background 0.2s ease;
+        color:white;
+
+        }
+        .footer-right:hover {
+        background: grey;
+        color:white!important;
+        }
+
+        .edit-btn {
+        border: none;
+        background: none;
+        font-size: 0.8rem;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: background 0.2s ease;
+        }
+
+    .edit-btn:hover {
+    background: grey;
+    color:white;
+    }
+        /* ACTIVITY TYPE BADGE */
+        .activity-type {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .badge-pill {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 0.4rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .phone-badge {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .appointment-badge {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .all-day-badge {
+            background-color: #cfe2ff;
+            color: #084298;
+            margin-top: 0.5rem;
+        }
+
+        /* CARD ACTION BUTTON */
+        .card-action-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            background: #e9ecef;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .card-action-btn:hover {
+            background: #dee2e6;
+        }
+
+        .edit-icon {
+            font-size: 14px;
+            color: #495057;
+        }
+
+        /* CARD BODY CONTENT */
+        .card-body-content {
+            padding: 1rem;
+        }
+
+        .activity-subject {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 0.75rem;
+            margin-top: 0;
+        }
+
+        .activity-detail {
+            font-size: 0.85rem;
+            color: #495057;
+            margin-bottom: 0.4rem;
+            margin-top: 0;
+        }
+
+        .activity-detail strong {
+            color: #212529;
+            font-weight: 600;
+        }
+
+        /* RESPONSIVE ADJUSTMENTS */
+        @@media (max-width: 768px) {
+            .timeline-container {
+                padding: 1rem;
+            }
+
+            .timeline-item {
+                flex-direction: column;
+                padding-bottom: 2rem;
+            }
+
+            .timeline-left-column {
+                width: 100%;
+                padding-right: 0;
+                padding-bottom: 1rem;
+                border-bottom: 1px solid #e9ecef;
+                margin-bottom: 1rem;
+            }
+
+            .timeline-right-column {
+                width: 100%;
+            }
+
+            .timeline-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 16px;
+            }
+
+            .card-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .activity-actions {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+    </style>
