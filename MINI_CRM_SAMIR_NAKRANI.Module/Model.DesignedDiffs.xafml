@@ -64,20 +64,20 @@
     </DetailView>
     <DetailView Id="Lead_DetailView">
       <Layout>
-        <TabbedGroup Id="MainTabs" Index="0" RelativeSize="100" IsNewNode="True">
-          <LayoutGroup Id="Related" Caption="Related" RelativeSize="0" ShowCaption="True" Direction="Horizontal" Index="0" IsNewNode="True">
-            <TabbedGroup Id="Lead_AccountContact_Tabs" Index="3" RelativeSize="30" IsNewNode="True">
-              <LayoutGroup Id="Tab_Account" Caption="Account" IsNewNode="True">
-                <LayoutItem Id="ParentAccount" ViewItem="ParentAccount" IsNewNode="True" />
+        <TabbedGroup Id="MainTabs" Index="1" RelativeSize="98.30795262267344" IsNewNode="True">
+          <LayoutGroup Id="Related" Caption="Related" RelativeSize="100" ShowCaption="True" Direction="Vertical" Index="0" IsNewNode="True">
+            <TabbedGroup Id="Lead_AccountContact_Tabs" Index="0" RelativeSize="100" IsNewNode="True">
+              <LayoutGroup Id="Tab_Account" Caption="Account" ShowCaption="True" Index="0" RelativeSize="100" IsNewNode="True">
+                <LayoutItem Id="ParentAccount" ViewItem="ParentAccount" Index="0" RelativeSize="100" IsNewNode="True" />
               </LayoutGroup>
-              <LayoutGroup Id="Tab_Contact" Caption="Contact" IsNewNode="True">
-                <LayoutItem Id="ParentContact" ViewItem="ParentContact" IsNewNode="True" />
+              <LayoutGroup Id="Tab_Contact" Caption="Contact" ShowCaption="True" Index="1" RelativeSize="100" IsNewNode="True">
+                <LayoutItem Id="ParentContact" ViewItem="ParentContact" Index="0" RelativeSize="100" IsNewNode="True" />
               </LayoutGroup>
             </TabbedGroup>
           </LayoutGroup>
           <LayoutGroup Id="Summary" Caption="Summary" RelativeSize="100" ShowCaption="True" Index="1" IsNewNode="True">
             <LayoutGroup Id="SummaryBody" RelativeSize="100" Direction="Horizontal" ShowCaption="False" Index="0" IsNewNode="True">
-              <LayoutGroup Id="LeftSide" RelativeSize="64.54741379310344" ShowCaption="False" Index="0" IsNewNode="True">
+              <LayoutGroup Id="LeftSide" RelativeSize="64.52020202020202" ShowCaption="False" Index="0" IsNewNode="True">
                 <LayoutItem Id="Subject" ViewItem="Subject" Index="0" RelativeSize="11.439114391143912" IsNewNode="True" />
                 <LayoutGroup Id="Tab_Contact" ShowCaption="True" Caption="Contact" Index="1" RelativeSize="56.27306273062731" IsNewNode="True">
                   <LayoutItem Id="Email" ViewItem="Email" Index="0" RelativeSize="11.428571428571429" IsNewNode="True" />
@@ -102,7 +102,7 @@
                   </LayoutGroup>
                 </TabbedGroup>
               </LayoutGroup>
-              <LayoutGroup Id="RightSide" RelativeSize="35.452586206896555" ShowCaption="False" Index="1" IsNewNode="True">
+              <LayoutGroup Id="RightSide" RelativeSize="35.47979797979798" ShowCaption="False" Index="1" IsNewNode="True">
                 <LayoutGroup Id="Activity_Box" Caption="ACTIVITY" RelativeSize="100" GroupBoxStyle="Box" ShowCaption="False" Index="0" IsNewNode="True">
                   <LayoutGroup Id="Activities_Group" ShowCaption="True" Caption="Activities" Index="0" RelativeSize="100" IsNewNode="True">
                     <LayoutItem Id="Activities" ViewItem="Activities" Index="0" RelativeSize="100" IsNewNode="True" />

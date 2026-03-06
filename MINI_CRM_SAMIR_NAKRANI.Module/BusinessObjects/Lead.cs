@@ -193,6 +193,13 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
             get => status;
             set => SetPropertyValue(nameof(Status), ref status, value);
         }
+
+        private ProcessState state;
+        public ProcessState State
+        { 
+            get => state;
+            set => SetPropertyValue(nameof(state),ref state, value);
+        }
     }
 }
 public enum LeadStatus
@@ -200,4 +207,12 @@ public enum LeadStatus
     Open,
     Qualified,
     Disqualified
+}
+public enum ProcessState
+{
+    Open = 0,
+    Qualified = 1,
+    Developed = 2,
+    Propose = 3,
+    Closed = 4
 }

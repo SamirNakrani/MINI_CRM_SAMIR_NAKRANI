@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <Views Id="Views">
+    <DetailView Id="Account_DetailView">
+      <Layout Id="Layout">
+        <TabbedGroup Id="TabbedGroup">
+          <LayoutGroup Id="Details">
+            <LayoutGroup Id="Account_Section" GroupBoxStyle="Box" />
+            <LayoutGroup Id="Address_Section" GroupBoxStyle="Box" />
+            <LayoutGroup Id="PrimaryContact_Section" GroupBoxStyle="Box" />
+          </LayoutGroup>
+        </TabbedGroup>
+      </Layout>
+    </DetailView>
+    <DetailView Id="Contact_DetailView">
+      <Layout Id="Layout">
+        <TabbedGroup Id="TabbedGroup">
+          <LayoutGroup Id="Details">
+            <LayoutGroup Id="Account_Info" GroupBoxStyle="Box">
+              <LayoutItem Id="Account" ViewItem="Account" />
+            </LayoutGroup>
+            <LayoutGroup Id="ContactInfo_Section" GroupBoxStyle="Box" />
+            <LayoutGroup Id="Names_Info" GroupBoxStyle="Box" />
+          </LayoutGroup>
+        </TabbedGroup>
+      </Layout>
+    </DetailView>
+    <DetailView Id="Lead_DetailView">
+      <Layout Id="Layout">
+        <TabbedGroup Id="MainTabs">
+          <LayoutGroup Id="Summary">
+            <LayoutGroup Id="SummaryBody">
+              <LayoutGroup Id="RightSide">
+                <LayoutGroup Id="Activity_Box" GroupBoxStyle="Box" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+        </TabbedGroup>
+        <LayoutGroup Id="ProcessProgress">
+          <LayoutItem Id="IsClosed" ViewItem="IsClosed" />
+          <LayoutItem Id="IsPropose" ViewItem="IsPropose" />
+          <LayoutItem Id="IsDeveloped" ViewItem="IsDeveloped" />
+          <LayoutItem Id="IsQualified" ViewItem="IsQualified" />
+          <LayoutItem Id="IsOpen" ViewItem="IsOpen" />
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+  </Views>
+</Application>
