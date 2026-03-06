@@ -115,8 +115,8 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
         [Association("Contact-Leads")]
         public XPCollection<Lead> Leads => GetCollection<Lead>(nameof(Leads));
 
-        [Association("Contact-Activities")]
-        public XPCollection<Activity> Activities => GetCollection<Activity>(nameof(Activities));
+        //[Association("Contact-Activities")]
+        //public XPCollection<Activity> Activities => GetCollection<Activity>(nameof(Activities));
 
         #endregion
 

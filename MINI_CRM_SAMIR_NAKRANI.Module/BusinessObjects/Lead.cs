@@ -200,6 +200,12 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
             get => state;
             set => SetPropertyValue(nameof(state),ref state, value);
         }
+
+        [Association("Lead-PhoneActivities")]
+        public XPCollection<PhoneActivity> PhoneActivities
+        {
+            get { return GetCollection<PhoneActivity>(nameof(PhoneActivities)); }
+        }
     }
 }
 public enum LeadStatus
