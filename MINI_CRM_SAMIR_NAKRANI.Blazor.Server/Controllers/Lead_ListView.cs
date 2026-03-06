@@ -117,9 +117,6 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Controllers
 
         protected override void OnDeactivated()
         {
-            toggleFilterRowAction.Execute -= ToggleFilterRowAction_Execute;
-            statusFilterAction.Execute -= StatusFilterAction_Execute;
-            resetViewAction.Execute -= ResetViewAction_Execute;
             base.OnDeactivated();
         }
     }
