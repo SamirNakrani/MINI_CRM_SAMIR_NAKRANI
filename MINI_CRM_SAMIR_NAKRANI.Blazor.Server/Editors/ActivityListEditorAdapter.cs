@@ -42,7 +42,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Editors.CustomActivityList
             {
                 ComponentModel.Data = (dataSource as IEnumerable)?
                     .OfType<Activity>()
-                    .OrderByDescending(a => a.StartOn)
+                    .OrderByDescending(a => a.ScheduledStart)
                     .ToList();
             }
         }

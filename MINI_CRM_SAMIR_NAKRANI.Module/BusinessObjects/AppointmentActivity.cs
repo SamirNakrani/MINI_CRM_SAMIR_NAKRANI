@@ -1,22 +1,54 @@
-﻿using DevExpress.Persistent.Base.General;
+﻿using DevExpress.Persistent.Base;
+using DevExpress.Persistent.Validation;
 using DevExpress.Xpo;
+using DevExpress.XtraScheduler;
 using System;
 
 namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
 {
-    public class AppointmentActivity : Activity, IEvent
+    [DefaultClassOptions]
+    public class AppointmentActivity : Activity
     {
         public AppointmentActivity(Session session) : base(session) { }
 
-        public DateTime EndOn { get; set; }
-        public bool AllDay { get; set; }
+        private AppointmentStatus statusReason = AppointmentStatus.Free;
+        public AppointmentStatus StatusReason
+        {
+            get => statusReason;
+            set => SetPropertyValue(nameof(StatusReason), ref statusReason, value);
+        }
 
-        public string Description { get; set; }
-        public string Location { get; set; }
-        public int Label { get; set; }
-        public int Status { get; set; }
-        public int Type { get; set; }
-        public string ResourceId { get; set; }
-        public object AppointmentId => Oid;
+        private bool isAllDay;
+        public bool IsAllDay
+        {
+            get => isAllDay;
+            set => SetPropertyValue(nameof(IsAllDay), ref isAllDay, value);
+        }
+
+        private string location;
+
+        [RuleRequiredField]
+        public string Location
+        {
+            get => location;
+            set => SetPropertyValue(nameof(Location), ref location, value);
+        }
+
+        private int durationMinutes;
+        [RuleValueComparison(DefaultContexts.Save, ValueComparisonType.GreaterThan, 0)]
+        [RuleValueComparison(DefaultContexts.Save, ValueComparisonType.LessThan, 1400)]
+        public int DurationMinutes
+        {
+            get => durationMinutes;
+            set => SetPropertyValue(nameof(DurationMinutes), ref durationMinutes, value);
+        }
+    }
+
+    public enum AppointmentStatus
+    {
+        Free,
+        Busy,
+        Tentative,
+        OutOfOffice
     }
 }

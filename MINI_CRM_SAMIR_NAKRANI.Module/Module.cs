@@ -5,6 +5,7 @@ using DevExpress.ExpressApp.Xpo;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl;
 using DevExpress.Xpo;
+using MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects;
 using System.ComponentModel;
 
 namespace MINI_CRM_SAMIR_NAKRANI.Module
@@ -21,7 +22,8 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module
             RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.ConditionalAppearance.ConditionalAppearanceModule));
             RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.Validation.ValidationModule));
             RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.StateMachine.StateMachineModule));
-        }
+           
+        }   
         public override IEnumerable<ModuleUpdater> GetModuleUpdaters(IObjectSpace objectSpace, Version versionFromDB)
         {
             return new ModuleUpdater[]
