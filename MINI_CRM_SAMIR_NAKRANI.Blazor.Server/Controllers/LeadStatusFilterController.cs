@@ -55,6 +55,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Controllers
             resetViewAction.Execute += ResetViewAction_Execute;
         }
 
+
         protected override void OnActivated()
         {
             base.OnActivated();

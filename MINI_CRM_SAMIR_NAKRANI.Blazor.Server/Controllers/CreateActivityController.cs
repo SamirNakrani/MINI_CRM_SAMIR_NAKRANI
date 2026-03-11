@@ -17,6 +17,9 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Controllers
         public SingleChoiceAction CreateActivityAction { get; }
         public SimpleAction DeleteActivityAction { get; }
 
+        private ActionBase _linkAction;
+        private ActionBase _unlinkAction;
+
         private bool _hasSelection = false;
 
         public CreateActivityController()
@@ -72,11 +75,17 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Controllers
             var deleteController = Frame.GetController<DeleteObjectsViewController>();
             if (deleteController != null)
                 deleteController.DeleteAction.Active["Hidden"] = false;
+
             var linkController = Frame.GetController<LinkUnlinkController>();
             if (linkController != null)
             {
-                linkController.LinkAction.Active["Hidden"] = false;
-                linkController.UnlinkAction.Active["Hidden"] = false;
+                _linkAction = linkController.LinkAction;
+                _unlinkAction = linkController.UnlinkAction;
+
+                if (_linkAction != null)
+                    _linkAction.Active["SelectionToggle"] = true;
+                if (_unlinkAction != null)
+                    _unlinkAction.Active["SelectionToggle"] = false;
             }
         }
         public void UpdateSelectionState(bool hasSelection)
@@ -85,6 +94,11 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Controllers
 
             CreateActivityAction.Active["SelectionToggle"] = !_hasSelection;
             DeleteActivityAction.Active["SelectionToggle"] = _hasSelection;
+
+            if (_linkAction != null)
+                _linkAction.Active["SelectionToggle"] = !_hasSelection;
+            if (_unlinkAction != null)
+                _unlinkAction.Active["SelectionToggle"] = _hasSelection;
         }
 
         private void CreateActivityAction_Execute(

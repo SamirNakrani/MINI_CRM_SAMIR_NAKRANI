@@ -27,11 +27,13 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddHttpContextAccessor();
+            services.AddDevExpressBlazor();
             services.AddScoped<CircuitHandler, CircuitHandlerProxy>();
             services.AddXaf(Configuration, builder =>
             {
                 builder.UseApplication<MINI_CRM_SAMIR_NAKRANIBlazorApplication>();
                 builder.Modules
+                    
                     .AddConditionalAppearance()
                     .AddValidation(options =>
                     {
@@ -58,6 +60,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server
                         options.UseSharedDataStoreProvider = true;
                     })
                     .AddNonPersistent();
+
             });
         }
 
@@ -79,6 +82,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server
             app.UseStaticFiles();
             app.UseRouting();
             app.UseXaf();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapXafEndpoints();

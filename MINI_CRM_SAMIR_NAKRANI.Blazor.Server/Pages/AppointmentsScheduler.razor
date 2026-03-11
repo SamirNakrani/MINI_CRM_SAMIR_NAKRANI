@@ -1,0 +1,235 @@
+@page "/appointments-scheduler"
+@using DevExpress.Blazor
+@using DevExpress.ExpressApp
+@using MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
+@using System.Collections.ObjectModel
+@inject IObjectSpaceFactory ObjectSpaceFactory
+@implements IDisposable
+
+@if (DataStorage != null)
+{
+    <DxScheduler StartDate="@StartDate"
+                 DataStorage="@DataStorage"
+                 @bind-ActiveViewType="ActiveView"
+                 AppointmentInserted="OnAppointmentInserted"
+                 AppointmentUpdated="OnAppointmentUpdated"
+                 AppointmentRemoved="OnAppointmentRemoved"
+                 AllowEdit="true"
+                 AllowCreateAppointmentByClickAndDrag="false"
+                 CssClass="w-100 h-100"
+                 Style="min-height:700px;">
+
+        <DxSchedulerDayView ShowWorkTimeOnly="false" TimeScale="@TimeSpan.FromMinutes(30)" />
+        <DxSchedulerWeekView ShowWorkTimeOnly="false" />
+        <DxSchedulerMonthView />
+
+    </DxScheduler>
+    <p style="margin-top: 20px; font-size: 14px; color: #666;">
+         <strong>Tip:</strong> Use the "New Activity" menu to create appointments, then they will appear here.
+    </p>
+}
+else
+{
+    <p>Loading calendar...</p>
+}
+
+@code {
+
+    private DxSchedulerDataStorage DataStorage;
+    private IObjectSpace workingObjectSpace;
+    private List<SchedulerAppointmentDto> appointmentsList = new List<SchedulerAppointmentDto>();
+
+    private DateTime StartDate = DateTime.Today;
+    private SchedulerViewType ActiveView = SchedulerViewType.Day;
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            workingObjectSpace = ObjectSpaceFactory.CreateObjectSpace(typeof(AppointmentActivity));
+            InitializeScheduler();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error initializing scheduler: {ex.Message}");
+        }
+    }
+
+    private void InitializeScheduler()
+    {
+        try
+        {
+            var activities = workingObjectSpace
+                .GetObjects<AppointmentActivity>()
+                .ToList();
+
+            appointmentsList = activities
+                .Select(a => new SchedulerAppointmentDto
+                {
+                    Id = a.Oid.ToString(),
+                    Subject = a.Subject,
+                    Description = a.Description,
+                    Start = a.ScheduledStart,
+                    End = a.ScheduledEnd,
+                    Location = a.Location,
+                    AllDay = a.IsAllDay
+                })
+                .ToList();
+
+            DataStorage = new DxSchedulerDataStorage
+            {
+                AppointmentsSource = appointmentsList,
+                AppointmentMappings = new DxSchedulerAppointmentMappings
+                {
+                    Id = nameof(SchedulerAppointmentDto.Id),
+                    Start = nameof(SchedulerAppointmentDto.Start),
+                    End = nameof(SchedulerAppointmentDto.End),
+                    Subject = nameof(SchedulerAppointmentDto.Subject),
+                    Description = nameof(SchedulerAppointmentDto.Description),
+                    Location = nameof(SchedulerAppointmentDto.Location),
+                    AllDay = nameof(SchedulerAppointmentDto.AllDay)
+                }
+            };
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in InitializeScheduler: {ex.Message}");
+        }
+    }
+
+    private void RefreshAppointments()
+    {
+        try
+        {
+            workingObjectSpace.Refresh();
+
+            var activities = workingObjectSpace
+                .GetObjects<AppointmentActivity>()
+                .ToList();
+
+            appointmentsList = activities
+                .Select(a => new SchedulerAppointmentDto
+                {
+                    Id = a.Oid.ToString(),
+                    Subject = a.Subject,
+                    Description = a.Description,
+                    Start = a.ScheduledStart,
+                    End = a.ScheduledEnd,
+                    Location = a.Location,
+                    AllDay = a.IsAllDay
+                })
+                .ToList();
+
+            DataStorage = new DxSchedulerDataStorage
+            {
+                AppointmentsSource = appointmentsList,
+                AppointmentMappings = new DxSchedulerAppointmentMappings
+                {
+                    Id = nameof(SchedulerAppointmentDto.Id),
+                    Start = nameof(SchedulerAppointmentDto.Start),
+                    End = nameof(SchedulerAppointmentDto.End),
+                    Subject = nameof(SchedulerAppointmentDto.Subject),
+                    Description = nameof(SchedulerAppointmentDto.Description),
+                    Location = nameof(SchedulerAppointmentDto.Location),
+                    AllDay = nameof(SchedulerAppointmentDto.AllDay)
+                }
+            };
+
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in RefreshAppointments: {ex.Message}");
+        }
+    }
+
+    async Task OnAppointmentInserted(DxSchedulerAppointmentItem e)
+    {
+        try
+        {
+            var apt = workingObjectSpace.CreateObject<AppointmentActivity>();
+
+            apt.Subject = e.Subject ?? "No Subject";
+            apt.Description = e.Description ?? "";
+            apt.ScheduledStart = e.Start;
+            apt.ScheduledEnd = e.End;
+            apt.IsAllDay = e.AllDay;
+            apt.Location = "Scheduler";
+
+            workingObjectSpace.CommitChanges();
+
+            RefreshAppointments();
+
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error inserting appointment: {ex.Message}");
+        }
+    }
+
+    async Task OnAppointmentUpdated(DxSchedulerAppointmentItem e)
+    {
+        try
+        {
+            var apt = workingObjectSpace.GetObjectByKey<AppointmentActivity>(e.Id);
+
+            if (apt != null)
+            {
+                apt.Subject = e.Subject ?? "No Subject";
+                apt.Description = e.Description ?? "";
+                apt.ScheduledStart = e.Start;
+                apt.ScheduledEnd = e.End;
+                apt.IsAllDay = e.AllDay;
+
+                workingObjectSpace.CommitChanges();
+
+                RefreshAppointments();
+            }
+
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating appointment: {ex.Message}");
+        }
+    }
+
+    async Task OnAppointmentRemoved(DxSchedulerAppointmentItem e)
+    {
+        try
+        {
+            var apt = workingObjectSpace.GetObjectByKey<AppointmentActivity>(e.Id);
+
+            if (apt != null)
+            {
+                workingObjectSpace.Delete(apt);
+                workingObjectSpace.CommitChanges();
+
+                RefreshAppointments();
+            }
+
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error removing appointment: {ex.Message}");
+        }
+    }
+
+    public class SchedulerAppointmentDto
+    {
+        public string Id { get; set; }
+        public string Subject { get; set; }
+        public string Description { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
+        public string Location { get; set; }
+        public bool AllDay { get; set; }
+    }
+
+    public void Dispose()
+    {
+        workingObjectSpace?.Dispose();
+    }
+}

@@ -1,4 +1,4 @@
-﻿@using MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
+@using MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
 @using MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Editors.CustomActivityList
 @using DevExpress.Blazor
 @using System.Globalization
@@ -29,10 +29,10 @@
                         }
 
                         <div class="activity-date-left">
-                            @if (item.StartOn > DateTime.MinValue)
+                            @if (item.ScheduledStart > DateTime.MinValue)
                             {
-                                <span>@item.StartOn.ToString("M/d/yyyy")</span>
-                                <span class="time-text">@item.StartOn.ToString("h:mm tt", CultureInfo.CurrentCulture)</span>
+                                <span>@item.ScheduledStart.ToString("M/d/yyyy")</span>
+                                <span class="time-text">@item.ScheduledStart.ToString("h:mm tt", CultureInfo.CurrentCulture)</span>
                             }
                             else
                             {
@@ -92,24 +92,10 @@
 
                                     else if (item is AppointmentActivity app)
                                     {
-                                        <p class="activity-detail">
-                                            <strong>Location:</strong> @app.Location
+                                         <p class="activity-detail">
+                                            <strong>@app.Description</strong>
                                         </p>
 
-                                        @if (app.EndOn > DateTime.MinValue)
-                                        {
-                                            <p class="activity-detail">
-                                                <strong>End:</strong>
-                                                @app.EndOn.ToString("MMM d, yyyy HH:mm", CultureInfo.CurrentCulture)
-                                            </p>
-                                        }
-
-                                        @if (app.AllDay)
-                                        {
-                                            <span class="badge-pill all-day-badge">
-                                                <i class="bi bi-clock"></i> All Day Event
-                                            </span>
-                                        }
                                     }
 
                                 </div>

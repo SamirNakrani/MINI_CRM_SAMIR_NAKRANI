@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Components;
 using MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects;
 using System.Collections;
 using System.ComponentModel;
+using DevExpress.Persistent.Base;
 
 namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Editors.CustomActivityList
 {
@@ -19,6 +20,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Editors.CustomActivityList
         private RenderFragment _componentContent;
         private Activity[] _selectedObjects = Array.Empty<Activity>();
         public event EventHandler<bool> SelectionStateChanged;
+        public event EventHandler<Activity> EditActivityRequested;
 
         public ActivityListViewModel ComponentModel { get; private set; }
 
@@ -42,7 +44,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Editors.CustomActivityList
             {
                 ComponentModel.Data = (dataSource as IEnumerable)?
                     .OfType<Activity>()
-                    .OrderByDescending(a => a.StartOn)
+                    .OrderByDescending(a => a.ScheduledStart)
                     .ToList();
             }
         }
@@ -55,7 +57,10 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Editors.CustomActivityList
             {
                 _selectedObjects = new[] { item };
                 OnSelectionChanged();
-                OnProcessSelectedItem();       
+                if (item != null && item.Oid != Guid.Empty)
+                {
+                    EditActivityRequested?.Invoke(this, item);
+                }
             });
 
             ComponentModel.SelectionChanged = EventCallback.Factory.Create<IEnumerable<Activity>>(this, items =>

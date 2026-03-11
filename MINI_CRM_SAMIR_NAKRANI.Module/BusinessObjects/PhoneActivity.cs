@@ -10,37 +10,8 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
     {
         public PhoneActivity(Session session) : base(session) { }
 
-        private ActivityState state = ActivityState.Open;
-        public ActivityState State
-        {
-            get => state;
-            set => SetPropertyValue(nameof(State), ref state, value);
-        }
-
-        private ActivityPriority priority = ActivityPriority.Normal;
-        public ActivityPriority Priority
-        {
-            get => priority;
-            set => SetPropertyValue(nameof(Priority), ref priority, value);
-        }
-
-        private string summary;
-        [Size(SizeAttribute.Unlimited)]
-        public string Summary
-        {
-            get => summary;
-            set => SetPropertyValue(nameof(Summary), ref summary, value);
-        }
-
-        private string description;
-        [Size(SizeAttribute.Unlimited)]
-        public string Description
-        {
-            get => description;
-            set => SetPropertyValue(nameof(Description), ref description, value);
-        }
-
         private string number;
+        [RuleRequiredField]
         public string Number
         {
             get => number;
@@ -55,27 +26,16 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
         }
 
         private int actualDurationMinutes;
+        [RuleValueComparison(DefaultContexts.Save, ValueComparisonType.GreaterThan, 0)]
+        [RuleValueComparison(DefaultContexts.Save, ValueComparisonType.LessThan, 1400)]
         public int ActualDurationMinutes
         {
             get => actualDurationMinutes;
             set => SetPropertyValue(nameof(ActualDurationMinutes), ref actualDurationMinutes, value);
         }
 
-        private DateTime scheduledStart;
-        public DateTime ScheduledStart
-        {
-            get => scheduledStart;
-            set => SetPropertyValue(nameof(ScheduledStart), ref scheduledStart, value);
-        }
-
-        private DateTime scheduledEnd;
-        public DateTime ScheduledEnd
-        {
-            get => scheduledEnd;
-            set => SetPropertyValue(nameof(ScheduledEnd), ref scheduledEnd, value);
-        }
-
         private Lead from;
+        [RuleRequiredField]
         public Lead From
         {
             get => from;
@@ -83,34 +43,12 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
         }
 
         private Lead to;
+        [RuleRequiredField]
         public Lead To
         {
             get => to;
             set => SetPropertyValue(nameof(To), ref to, value);
         }
-
-        private Lead relatedTo;
-        [Association("Lead-PhoneActivities")]
-        public Lead RelatedTo
-        {
-            get => relatedTo;
-            set => SetPropertyValue(nameof(RelatedTo), ref relatedTo, value);
-        }
-    }
-
-    public enum ActivityState
-    {
-        Open,
-        Made,
-        Canceled,
-        Received
-    }
-
-    public enum ActivityPriority
-    {
-        Low,
-        Normal,
-        High
     }
 
     public enum PhoneDirection

@@ -1,6 +1,7 @@
 using DevExpress.ExpressApp.Blazor.Components.Models;
 using Microsoft.AspNetCore.Components;
 using MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Controllers;
+using MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Pages;
 using MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects;
 
 namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Editors.CustomActivityList

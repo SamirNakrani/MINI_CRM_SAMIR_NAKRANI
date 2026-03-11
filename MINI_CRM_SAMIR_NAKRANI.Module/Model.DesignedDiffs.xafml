@@ -63,9 +63,10 @@
       </Layout>
     </DetailView>
     <DetailView Id="Lead_DetailView">
-      <Items>
-        <ControlDetailItem Id="ProgreeBar" ControlTypeName="MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Controllers.LeadStatusBarViewItem.cs" IsNewNode="True" />
-      </Items>
+		<Items>
+			<ControlDetailItem Id="ProgreeBar" ControlTypeName="MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Controllers.LeadStatusBarViewItem.cs" IsNewNode="True" />
+		</Items>
+		
       <Layout>
         <LayoutItem Id="ProgreeBar" ViewItem="ProgreeBar" Index="0" RelativeSize="5.220228384991843" IsNewNode="True" />
         <TabbedGroup Id="MainTabs" Index="1" RelativeSize="94.77977161500816" IsNewNode="True">
