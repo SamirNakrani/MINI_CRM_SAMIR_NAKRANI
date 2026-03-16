@@ -1,5 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Application>
+  <NavigationItems>
+    <Items>
+      <Item Id="Activity">
+        <Items>
+          <Item Id="AppointmentActivity_ListView" ImageName="Actions_Clock" Caption="Appointment" />
+        </Items>
+      </Item>
+    </Items>
+  </NavigationItems>
   <SchemaModules>
     <SchemaModule Name="SystemModule" Version="25.2.3.0" IsNewNode="True" />
   </SchemaModules>
@@ -63,13 +72,16 @@
       </Layout>
     </DetailView>
     <DetailView Id="Lead_DetailView">
-		<Items>
-			<ControlDetailItem Id="ProgreeBar" ControlTypeName="MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Controllers.LeadStatusBarViewItem.cs" IsNewNode="True" />
-		</Items>
-		
+      <Items>
+        <ControlDetailItem Id="Progress_Bar" ControlTypeName="MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Editors.ViewItems.LeadStatusBarViewItem.cs" IsNewNode="True" />
+      </Items>
       <Layout>
-        <LayoutItem Id="ProgreeBar" ViewItem="ProgreeBar" Index="0" RelativeSize="5.220228384991843" IsNewNode="True" />
-        <TabbedGroup Id="MainTabs" Index="1" RelativeSize="94.77977161500816" IsNewNode="True">
+        <LayoutGroup Id="Auto6106c4ce-69a0-4de2-bafe-8a58d8f5f54d" ShowCaption="False" Caption="" Direction="Horizontal" Index="0" RelativeSize="5.023547880690738" IsNewNode="True">
+          <LayoutItem Id="Item1" SizeConstraintsType="Custom" MinSize="381, 32" MaxSize="381, 32" Index="0" RelativeSize="49.93446920052425" IsNewNode="True" />
+          <LayoutItem Id="Status" ViewItem="Status" CaptionLocation="Left" Index="1" RelativeSize="50.06553079947575" IsNewNode="True" />
+        </LayoutGroup>
+        <LayoutItem Id="Progress_Bar" ViewItem="Progress_Bar" Index="1" RelativeSize="3.767660910518053" IsNewNode="True" />
+        <TabbedGroup Id="MainTabs" Index="2" RelativeSize="91.20879120879121" IsNewNode="True">
           <LayoutGroup Id="Related" Caption="Related" RelativeSize="100" ShowCaption="True" Direction="Vertical" Index="0" IsNewNode="True">
             <TabbedGroup Id="Lead_AccountContact_Tabs" Index="0" RelativeSize="100" IsNewNode="True">
               <LayoutGroup Id="Tab_Account" Caption="Account" ShowCaption="True" Index="0" RelativeSize="100" IsNewNode="True">
@@ -82,7 +94,7 @@
           </LayoutGroup>
           <LayoutGroup Id="Summary" Caption="Summary" RelativeSize="100" ShowCaption="True" Index="1" IsNewNode="True">
             <LayoutGroup Id="SummaryBody" RelativeSize="100" Direction="Horizontal" ShowCaption="False" Index="0" IsNewNode="True">
-              <LayoutGroup Id="LeftSide" RelativeSize="63.94101876675603" ShowCaption="False" Index="0" IsNewNode="True">
+              <LayoutGroup Id="LeftSide" RelativeSize="49.932523616734144" ShowCaption="False" Index="0" IsNewNode="True">
                 <LayoutItem Id="Subject" ViewItem="Subject" Index="0" RelativeSize="11.439114391143912" IsNewNode="True" />
                 <LayoutGroup Id="Tab_Contact" ShowCaption="True" Caption="Contact" Index="1" RelativeSize="56.27306273062731" IsNewNode="True">
                   <LayoutItem Id="Email" ViewItem="Email" Index="0" RelativeSize="11.428571428571429" IsNewNode="True" />
@@ -107,7 +119,7 @@
                   </LayoutGroup>
                 </TabbedGroup>
               </LayoutGroup>
-              <LayoutGroup Id="RightSide" RelativeSize="36.05898123324397" ShowCaption="False" Index="1" IsNewNode="True">
+              <LayoutGroup Id="RightSide" RelativeSize="50.067476383265856" ShowCaption="False" Index="1" IsNewNode="True">
                 <LayoutGroup Id="Activity_Box" Caption="ACTIVITY" RelativeSize="100" GroupBoxStyle="Box" ShowCaption="False" Index="0" IsNewNode="True">
                   <LayoutGroup Id="Activities_Group" ShowCaption="True" Caption="Activities" Index="0" RelativeSize="100" IsNewNode="True">
                     <LayoutItem Id="Activities" ViewItem="Activities" Index="0" RelativeSize="100" IsNewNode="True" />
@@ -180,28 +192,18 @@
             </LayoutGroup>
             <LayoutGroup Id="PhoneActivity" Index="1" RelativeSize="63.63636363636363">
               <LayoutGroup Id="PhoneActivity_col1" RelativeSize="50">
-                <LayoutItem Id="Priority" Index="0" RelativeSize="23.529411764705884" />
-                <LayoutItem Id="State" ViewItem="State" Index="0" RelativeSize="20" Removed="True" />
-                <LayoutItem Id="Subject" Index="1" RelativeSize="17.647058823529413" />
                 <LayoutItem Id="Number" Index="2" RelativeSize="17.647058823529413" />
                 <LayoutItem Id="Direction" Index="3" RelativeSize="17.647058823529413" />
                 <LayoutItem Id="ActualDurationMinutes" Index="4" RelativeSize="23.529411764705884" />
               </LayoutGroup>
               <LayoutGroup Id="PhoneActivity_col2" RelativeSize="50">
-                <LayoutItem Id="ScheduledStart" RelativeSize="23.529411764705884" />
-                <LayoutItem Id="ScheduledEnd" RelativeSize="17.647058823529413" />
                 <LayoutItem Id="From" RelativeSize="17.647058823529413" />
                 <LayoutItem Id="To" RelativeSize="17.647058823529413" />
-                <LayoutItem Id="RelatedTo" RelativeSize="23.529411764705884" />
               </LayoutGroup>
             </LayoutGroup>
-            <LayoutGroup Id="Activity" Index="2" RelativeSize="23.715415019762847">
-              <LayoutItem Id="Lead" RelativeSize="50" />
-              <LayoutItem Id="StartOn" RelativeSize="50" />
-            </LayoutGroup>
+            <LayoutGroup Id="Activity" Index="2" RelativeSize="23.715415019762847" />
           </LayoutGroup>
           <LayoutGroup Id="SizeableEditors" RelativeSize="58.38815789473684">
-            <LayoutItem Id="Summary" RelativeSize="49.57746478873239" />
             <LayoutItem Id="Description" RelativeSize="50.42253521126761" />
           </LayoutGroup>
         </LayoutGroup>

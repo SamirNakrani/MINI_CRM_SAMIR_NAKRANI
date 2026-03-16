@@ -15,7 +15,7 @@ using DevExpress.Persistent.Base;
 namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Editors.CustomActivityList
 {
     [ListEditor(typeof(Activity))]
-    public class BlazorCustomActivityListEditor : ListEditor, IComponentContentHolder, IControlOrderProvider
+    public class ActivityListEditor : ListEditor, IComponentContentHolder, IControlOrderProvider
     {
         private RenderFragment _componentContent;
         private Activity[] _selectedObjects = Array.Empty<Activity>();
@@ -33,7 +33,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Editors.CustomActivityList
             }
         }
 
-        public BlazorCustomActivityListEditor(IModelListView model) : base(model) { }
+        public ActivityListEditor(IModelListView model) : base(model) { }
 
         private void BindingList_ListChanged(object sender, ListChangedEventArgs e)
             => UpdateDataSource(DataSource);

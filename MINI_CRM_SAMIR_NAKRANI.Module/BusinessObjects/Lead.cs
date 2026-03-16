@@ -194,11 +194,64 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
             set => SetPropertyValue(nameof(Status), ref status, value);
         }
 
+
         private ProcessState state;
         public ProcessState State
         { 
             get => state;
             set => SetPropertyValue(nameof(state),ref state, value);
+        }
+        private bool isConverted;
+
+        public bool IsConverted
+        {
+            get => isConverted;
+            set => SetPropertyValue(nameof(IsConverted), ref isConverted, value);
+        }
+        private void ConvertLead()
+        {
+            var session = Session;
+
+            Account account = new Account(session)
+            {
+                AccountName = Company,
+                Phone = Phone,
+                Website = Website
+            };
+
+            Contact contact = new Contact(session)
+            {
+                FirstName = FirstName,
+                MiddleName = MiddleName,
+                LastName = LastName,
+                Email = Email,
+                Phone = Phone,
+                Mobile = Mobile,
+                Title = Title
+            };
+
+            account.PrimaryContact = contact;
+
+            Opportunities opportunity = new Opportunities(session)
+            {
+                Topic = Subject,
+                Description = $"Opportunity created from Lead: {FullName}",
+                Contact = contact,
+                EstimatedCloseDate = DateTime.Now.AddMonths(1)
+            };
+
+            ParentAccount = account;
+            ParentContact = contact;
+        }
+        protected override void OnSaving()
+        {
+            base.OnSaving();
+
+            if (!IsDeleted && Status == LeadStatus.Qualified && !IsConverted)
+            {
+                ConvertLead();
+                IsConverted = true;
+            }
         }
     }
 }
