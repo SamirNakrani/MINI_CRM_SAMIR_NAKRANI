@@ -1,4 +1,5 @@
-﻿using DevExpress.Persistent.Base;
+﻿using DevExpress.ExpressApp;
+using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl;
 using DevExpress.Xpo;
 using System.ComponentModel;
@@ -26,6 +27,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
             get => country;
             set => SetPropertyValue(nameof(Country), ref country, value);
         }
+
 
         [Size(20)]
         public string ZipPostalCode

@@ -8,7 +8,6 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
 {
     [DefaultClassOptions]
     [Persistent("Activity")]
-
     public abstract class Activity : BaseObject
     {
         public Activity(Session session) : base(session) { }

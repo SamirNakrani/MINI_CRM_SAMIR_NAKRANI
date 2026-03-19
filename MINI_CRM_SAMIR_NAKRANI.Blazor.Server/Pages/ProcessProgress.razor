@@ -1,7 +1,9 @@
 @using DevExpress.ExpressApp
 @using DevExpress.Blazor
+@using MINI_CRM_SAMIR_NAKRANI.Module
 @using MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
 @using MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Editors.ViewItems
+@using DevExpress.ExpressApp.Utils
 @implements IDisposable
 
 @if (Lead != null)
@@ -20,13 +22,13 @@
                                     ReadOnly="true"
                                     CssClass="lead-status-checkbox" />
 
-                        <span class="lead-status-text">@stage</span>
+                        <span class="lead-status-text">@stage.ToCaption()</span>
                     </div>
 
                     @if (ShowCard && PopupStage == stage)
                     {
                         <div class="stage-card">
-                            <div class="stage-card-header">@stage</div>
+                            <div class="stage-card-header">@stage.ToCaption()</div>
 
                             <div class="stage-card-actions">
                                 <DxButton Text="Previous"
@@ -34,7 +36,7 @@
                                           Click="GoPrevious" style="margin-right:20px;" />
 
                                 <DxButton Text="Next"
-                                          Enabled="@CanGoNext"
+                                          Enabl\[ed="@CanGoNext"
                                           RenderStyle="ButtonRenderStyle.Primary"
                                           CssClass="ml-2"
                                           Click="GoNext" />

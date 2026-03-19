@@ -1,6 +1,9 @@
-﻿using DevExpress.ExpressApp.Model;
+﻿using DevExpress.ExpressApp;
+using DevExpress.ExpressApp.DC;
+using DevExpress.ExpressApp.Model;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl;
+using DevExpress.Persistent.BaseImpl.PermissionPolicy;
 using DevExpress.Persistent.Validation;
 using DevExpress.Xpo;
 using System;
@@ -148,7 +151,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
             set => SetPropertyValue(nameof(Website), ref website, value);
         }
 
-        [Aggregated]
+        [DevExpress.ExpressApp.DC.Aggregated]
         [ExpandObjectMembers(ExpandObjectMembers.Never)]
         public Address Address1
         {
@@ -156,7 +159,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
             set => SetPropertyValue(nameof(Address1), ref address1, value);
         }
 
-        [Aggregated]
+        [DevExpress.ExpressApp.DC.Aggregated]
         [ExpandObjectMembers(ExpandObjectMembers.Never)]
         public Address Address2
         {
@@ -194,7 +197,61 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
             set => SetPropertyValue(nameof(Status), ref status, value);
         }
 
+        protected override void OnSaved()
+        {
+            base.OnSaving();
+            ModifiedOn = DateTime.Now;
+        }
+        private PermissionPolicyUser owner;
 
+        [ModelDefault("AllowEdit", "False")] 
+        public PermissionPolicyUser Owner
+        {
+            get => owner;
+            set => SetPropertyValue(nameof(Owner), ref owner, value);
+        }
+
+        private DateTime? modifiedOn;
+        [ModelDefault("AllowEdit", "False")] 
+        [ModelDefault("EditMask", "G")]
+        [ModelDefault("DisplayFormat", "G")]
+        [ModelDefault("EditMaskType", "DateTime")]
+        [XafDisplayName(nameof(ModifiedOn))]
+        public DateTime? ModifiedOn
+        {
+            get => modifiedOn;
+            set => SetPropertyValue(nameof(ModifiedOn), ref modifiedOn, value);
+        }
+
+        private PermissionPolicyUser createdBy;
+
+        [ModelDefault("AllowEdit", "False")] 
+        public PermissionPolicyUser CreatedBy
+        {
+            get => createdBy;
+            set => SetPropertyValue(nameof(CreatedBy), ref createdBy, value);
+        }
+
+        private DateTime? createdOn;
+        [ModelDefault("AllowEdit", "False")]  
+        [ModelDefault("EditMask", "G")]
+        [ModelDefault("DisplayFormat", "G")]
+        [ModelDefault("EditMaskType", "DateTime")]
+        [XafDisplayName(nameof(CreatedOn))]
+        public DateTime? CreatedOn
+        {
+            get => createdOn;
+            set => SetPropertyValue(nameof(CreatedOn), ref createdOn, value);
+        }
+
+        private PermissionPolicyUser modifiedBy;
+
+        [ModelDefault("AllowEdit", "False")]  
+        public PermissionPolicyUser ModifiedBy
+        {
+            get => modifiedBy;
+            set => SetPropertyValue(nameof(ModifiedBy), ref modifiedBy, value);
+        }
         private ProcessState state;
         public ProcessState State
         { 
@@ -243,29 +300,108 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
             ParentAccount = account;
             ParentContact = contact;
         }
+        public override void AfterConstruction()
+        {
+            base.AfterConstruction();
+            if (SecuritySystem.CurrentUser is PermissionPolicyUser user)
+            {
+                var currentUser = Session.GetObjectByKey<PermissionPolicyUser>(user.Oid);
+                Owner = currentUser;
+                CreatedBy = currentUser;   
+                ModifiedBy = currentUser;  
+            }
+            CreatedOn = DateTime.Now;
+            ModifiedOn = DateTime.Now;     
+        }
+        protected override void OnLoaded()
+        {
+            base.OnLoaded();
+
+            // Patch display only — doesn't dirty the object
+            if (Owner == null || CreatedBy == null || CreatedOn == null)
+            {
+                if (SecuritySystem.CurrentUser is PermissionPolicyUser user)
+                {
+                    var currentUser = Session.GetObjectByKey<PermissionPolicyUser>(user.Oid);
+
+                    if (Owner == null) Owner = currentUser;
+                    if (CreatedBy == null) CreatedBy = currentUser;
+                    if (CreatedOn == null) CreatedOn = DateTime.Now;
+                }
+            }
+        }
         protected override void OnSaving()
         {
             base.OnSaving();
 
-            if (!IsDeleted && Status == LeadStatus.Qualified && !IsConverted)
+            if (SecuritySystem.CurrentUser is PermissionPolicyUser user)
+            {
+                var currentUser = Session.GetObjectByKey<PermissionPolicyUser>(user.Oid);
+
+                if (Owner == null)
+                    Owner = currentUser;
+
+                if (CreatedBy == null)
+                    CreatedBy = currentUser;
+
+                if (CreatedOn == null)
+                    CreatedOn = DateTime.Now;
+
+                ModifiedOn = DateTime.Now;
+                ModifiedBy = currentUser;
+            }
+            if (SecuritySystem.CurrentUser is PermissionPolicyUser permissionPolicyUser)
+            {
+                var currentUser = Session.GetObjectByKey<PermissionPolicyUser>(permissionPolicyUser.Oid);
+                if (Session.IsNewObject(this))
+                {
+                    CreatedOn = DateTime.Now;
+                    CreatedBy = currentUser;
+                }
+
+                ModifiedOn = DateTime.Now;
+                ModifiedBy = currentUser;
+            }
+            if (!IsDeleted && Status == LeadStatus.Qualified && !IsConverted && Session.IsObjectToSave(this))
             {
                 ConvertLead();
                 IsConverted = true;
             }
         }
+        private XPCollection<AuditDataItemPersistent> auditTrail;
+
+        [DevExpress.ExpressApp.CollectionOperationSet(AllowAdd = false, AllowRemove = false)]
+        [VisibleInListView(false)]
+        [VisibleInLookupListView(false)]
+        public XPCollection<AuditDataItemPersistent> AuditTrail
+        {
+            get
+            {
+                if (auditTrail == null)
+                {
+                    auditTrail = AuditedObjectWeakReference.GetAuditTrail(Session, this);
+                }
+                return auditTrail;
+            }
+        }
     }
 }
-public enum LeadStatus
+
+namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
 {
-    Open,
-    Qualified,
-    Disqualified
-}
-public enum ProcessState
-{
-    Open = 0,
-    Qualified = 1,
-    Developed = 2,
-    Propose = 3,
-    Closed = 4
+    public enum LeadStatus
+    {
+        Open,
+        Qualified,
+        Disqualified
+    }
+
+    public enum ProcessState
+    {
+        Open = 0,
+        Qualified = 1,
+        Developed = 2,
+        Propose = 3,
+        Closed = 4
+    }
 }
