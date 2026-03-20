@@ -24,7 +24,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server
         public MINI_CRM_SAMIR_NAKRANIBlazorModule()
         {
             DataAccessModeHelper.RegisterEditorSupportedModes(
-                typeof(BlazorCustomActivityListEditor),
+                typeof(ActivityListEditor),
                 new[] { CollectionSourceDataAccessMode.Client }
             );
         }
@@ -42,7 +42,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server
         public override void Setup(XafApplication application)
         {
             base.Setup(application);
-            application.SetupComplete += Application_SetupComplete;
+            //application.SetupComplete += Application_SetupComplete;
         }
 
         private void Application_SetupComplete(object sender, EventArgs e)

@@ -5,11 +5,12 @@
       <Layout Id="Layout">
         <TabbedGroup Id="TabbedGroup">
           <LayoutGroup Id="Details">
-            <LayoutGroup Id="Address_Info" GroupBoxStyle="Box" />
+            <LayoutGroup Id="Account_Section" GroupBoxStyle="Box" />
+            <LayoutGroup Id="Address_Section" GroupBoxStyle="Box" />
+            <LayoutGroup Id="PrimaryContact_Section" GroupBoxStyle="Box" />
           </LayoutGroup>
-          <LayoutGroup Id="Summary">
-            <LayoutGroup Id="Account_Info" GroupBoxStyle="Box" />
-            <LayoutGroup Id="PrimaryContact_Info" GroupBoxStyle="Box" />
+          <LayoutGroup Id="Related">
+            <LayoutItem Id="Activities" ViewItem="Activities" />
           </LayoutGroup>
         </TabbedGroup>
       </Layout>
@@ -17,12 +18,40 @@
     <DetailView Id="Contact_DetailView">
       <Layout Id="Layout">
         <TabbedGroup Id="TabbedGroup">
+          <LayoutGroup Id="Details">
+            <LayoutGroup Id="Account_Info" GroupBoxStyle="Box">
+              <LayoutItem Id="Account" ViewItem="Account" />
+            </LayoutGroup>
+            <LayoutGroup Id="ContactInfo_Section" GroupBoxStyle="Box" />
+            <LayoutGroup Id="Names_Info" GroupBoxStyle="Box" />
+          </LayoutGroup>
+          <LayoutGroup Id="Related">
+            <LayoutItem Id="Activities" ViewItem="Activities" />
+          </LayoutGroup>
+        </TabbedGroup>
+      </Layout>
+    </DetailView>
+    <DetailView Id="Lead_DetailView">
+      <Layout Id="Layout">
+        <TabbedGroup Id="MainTabs">
           <LayoutGroup Id="Summary">
-            <LayoutGroup Id="Account_Info" GroupBoxStyle="Box" />
-            <LayoutGroup Id="Contact_Info" GroupBoxStyle="Box" />
+            <LayoutGroup Id="SummaryBody">
+              <LayoutGroup Id="RightSide">
+                <LayoutGroup Id="Activity_Box" GroupBoxStyle="Box" />
+              </LayoutGroup>
+            </LayoutGroup>
           </LayoutGroup>
         </TabbedGroup>
       </Layout>
     </DetailView>
   </Views>
+  <NavigationItems Id="NavigationItems">
+    <Items Id="Items">
+      <Item Id="Apointment">
+        <Items Id="Items">
+          <Item Id="AppointmentActivity_ListView" Caption="Apointment" />
+        </Items>
+      </Item>
+    </Items>
+  </NavigationItems>
 </Application>

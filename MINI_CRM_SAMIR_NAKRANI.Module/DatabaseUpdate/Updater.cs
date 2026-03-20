@@ -1,9 +1,11 @@
 ﻿using DevExpress.Data.Filtering;
 using DevExpress.ExpressApp;
+using DevExpress.ExpressApp.Security;
 using DevExpress.ExpressApp.Updating;
 using DevExpress.ExpressApp.Xpo;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl;
+using DevExpress.Persistent.BaseImpl.PermissionPolicy;
 using DevExpress.Xpo;
 using Microsoft.Extensions.DependencyInjection;
 using MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects;
@@ -20,6 +22,67 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.DatabaseUpdate
         public override void UpdateDatabaseAfterUpdateSchema()
         {
             base.UpdateDatabaseAfterUpdateSchema();
+            var adminRole = ObjectSpace.FirstOrDefault<PermissionPolicyRole>(r => r.Name == "Admin");
+            if (adminRole == null)
+            {
+                adminRole = ObjectSpace.CreateObject<PermissionPolicyRole>();
+                adminRole.Name = "Admin";
+                adminRole.IsAdministrative = true;
+            }
+
+            var userRole = ObjectSpace.FirstOrDefault<PermissionPolicyRole>(r => r.Name == "User");
+            if (userRole == null)
+            {
+                userRole = ObjectSpace.CreateObject<PermissionPolicyRole>();
+                userRole.Name = "User";
+
+                userRole.PermissionPolicy = SecurityPermissionPolicy.AllowAllByDefault;
+                userRole.AddTypePermission<DashboardData>(
+                    SecurityOperations.Create, SecurityPermissionState.Deny);
+
+                userRole.AddTypePermission<DashboardData>(
+                    SecurityOperations.Write, SecurityPermissionState.Deny);
+
+                userRole.AddTypePermission<DashboardData>(
+                    SecurityOperations.Delete, SecurityPermissionState.Deny);
+
+                userRole.AddTypePermission<DashboardData>(
+                    SecurityOperations.Read, SecurityPermissionState.Allow);
+
+                userRole.AddTypePermission<Lead>(SecurityOperations.FullAccess, SecurityPermissionState.Allow);
+                userRole.AddTypePermission<Account>(SecurityOperations.FullAccess, SecurityPermissionState.Allow);
+                userRole.AddTypePermission<Activity>(SecurityOperations.FullAccess, SecurityPermissionState.Allow);
+                userRole.AddTypePermission<Address>(SecurityOperations.FullAccess, SecurityPermissionState.Allow);
+                userRole.AddTypePermission<AppointmentActivity>(SecurityOperations.FullAccess, SecurityPermissionState.Allow);
+                userRole.AddTypePermission<Company>(SecurityOperations.FullAccess, SecurityPermissionState.Allow);
+                userRole.AddTypePermission<Contact>(SecurityOperations.FullAccess, SecurityPermissionState.Allow);
+                userRole.AddTypePermission<ContactMethod>(SecurityOperations.FullAccess, SecurityPermissionState.Allow);
+                userRole.AddTypePermission<Country>(SecurityOperations.FullAccess, SecurityPermissionState.Allow);
+                userRole.AddTypePermission<Opportunities>(SecurityOperations.FullAccess, SecurityPermissionState.Allow);
+                userRole.AddTypePermission<PhoneActivity>(SecurityOperations.FullAccess, SecurityPermissionState.Allow);
+                userRole.AddTypePermission<ProcessStateMachine>(SecurityOperations.FullAccess, SecurityPermissionState.Allow);
+
+            }
+
+            var adminUser = ObjectSpace.FirstOrDefault<PermissionPolicyUser>(u => u.UserName == "Admin");
+            if (adminUser == null)
+            {
+                adminUser = ObjectSpace.CreateObject<PermissionPolicyUser>();
+                adminUser.UserName = "Admin";
+                adminUser.SetPassword("admin");
+                adminUser.Roles.Add(adminRole);
+            }
+
+            var testUser = ObjectSpace.FirstOrDefault<PermissionPolicyUser>(u => u.UserName == "testuser");
+            if (testUser == null)
+            {
+                testUser = ObjectSpace.CreateObject<PermissionPolicyUser>();
+                testUser.UserName = "testuser";
+                testUser.SetPassword("123");
+                testUser.Roles.Add(userRole);
+            }
+
+            ObjectSpace.CommitChanges();
 
             if (ObjectSpace.GetObjectsCount(typeof(Lead), null) > 0)
                 return;

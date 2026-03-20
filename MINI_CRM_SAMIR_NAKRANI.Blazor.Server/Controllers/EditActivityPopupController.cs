@@ -16,7 +16,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Controllers
         {
             base.OnActivated();
 
-            if (View.Editor is BlazorCustomActivityListEditor editor)
+            if (View.Editor is ActivityListEditor editor)
             {
                 editor.EditActivityRequested += Editor_EditActivityRequested;
             }
@@ -47,7 +47,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Controllers
 
         protected override void OnDeactivated()
         {
-            if (View?.Editor is BlazorCustomActivityListEditor editor)
+            if (View?.Editor is ActivityListEditor editor)
             {
                 editor.EditActivityRequested -= Editor_EditActivityRequested;
             }

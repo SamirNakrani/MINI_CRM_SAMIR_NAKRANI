@@ -9,7 +9,21 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Model.DesignedDiffs.Localization.ja-JP.xafml" />
+    <None Remove="Model.DesignedDiffs.Localization.ja.xafml" />
     <None Remove="Model.DesignedDiffs.xafml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model.DesignedDiffs.Localization.ja.xafml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model.DesignedDiffs.Localization.ja-JP.xafml">
+      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Model.DesignedDiffs.xafml">
@@ -17,9 +31,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="DevExpress.Dashboard.Core" Version="25.2.3" />
     <PackageReference Include="DevExpress.ExpressApp" Version="25.2.3" />
+    <PackageReference Include="DevExpress.ExpressApp.AuditTrail.Xpo" Version="25.2.3" />
     <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" Version="25.2.3" />
     <PackageReference Include="DevExpress.ExpressApp.ConditionalAppearance" Version="25.2.3" />
+    <PackageReference Include="DevExpress.ExpressApp.Dashboards" Version="25.2.3" />
+    <PackageReference Include="DevExpress.ExpressApp.Dashboards.Blazor" Version="25.2.3" />
     <PackageReference Include="DevExpress.ExpressApp.StateMachine" Version="25.2.3" />
     <PackageReference Include="DevExpress.ExpressApp.Validation" Version="25.2.3" />
     <PackageReference Include="DevExpress.ExpressApp.Xpo" Version="25.2.3" />
@@ -33,6 +51,9 @@
     <Reference Include="DevExpress.ExpressApp.Blazor.v25.2">
       <HintPath>..\..\..\..\Program Files\DevExpress 25.2\Components\Offline Packages\devexpress.expressapp.blazor\25.2.3\lib\net8.0\DevExpress.ExpressApp.Blazor.v25.2.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.ExpressApp.Security.v25.2">
+      <HintPath>..\..\..\..\Program Files\DevExpress 25.2\Components\Offline Packages\devexpress.expressapp.security\25.2.3\lib\net8.0\DevExpress.ExpressApp.Security.v25.2.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Update="UnusableNodes.xml">
@@ -44,34 +65,22 @@
     <None Update="UnusableNodes10.xml">
       <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
     </None>
-    <None Update="UnusableNodes11.xml">
-      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
-    </None>
     <None Update="UnusableNodes12.xml">
-      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
-    </None>
-    <None Update="UnusableNodes13.xml">
       <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
     </None>
     <None Update="UnusableNodes14.xml">
       <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
     </None>
-    <None Update="UnusableNodes15.xml">
-      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
-    </None>
     <None Update="UnusableNodes16.xml">
-      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
-    </None>
-    <None Update="UnusableNodes17.xml">
       <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
     </None>
     <None Update="UnusableNodes18.xml">
       <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
     </None>
-    <None Update="UnusableNodes19.xml">
+    <None Update="UnusableNodes2.xml">
       <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
     </None>
-    <None Update="UnusableNodes2.xml">
+    <None Update="UnusableNodes21.xml">
       <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
     </None>
     <None Update="UnusableNodes3.xml">
@@ -80,19 +89,13 @@
     <None Update="UnusableNodes4.xml">
       <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
     </None>
-    <None Update="UnusableNodes5.xml">
-      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
-    </None>
     <None Update="UnusableNodes6.xml">
-      <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
-    </None>
-    <None Update="UnusableNodes7.xml">
       <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
     </None>
     <None Update="UnusableNodes8.xml">
       <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
     </None>
-    <None Update="UnusableNodes9.xml">
+    <None Update="UnusableNodes_ja.xml">
       <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
     </None>
   </ItemGroup>

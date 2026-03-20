@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <ActionDesign>
+    <Actions>
+      <Action Id="Cancel" Caption="キャンセル" />
+      <Action Id="Delete" Caption="削除" />
+      <Action Id="New" Caption="新規作成" />
+      <Action Id="Refresh" Caption="更新" />
+      <Action Id="Save" Caption="保存" />
+      <Action Id="SaveAndClose" Caption="保存して閉じる" />
+    </Actions>
+  </ActionDesign>
+  <Localization>
+    <LocalizationGroup Name="Enums">
+      <LocalizationGroup Name="MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects.ProcessState">
+        <LocalizationItem Name="Closed" Value="完了" />
+        <LocalizationItem Name="Developed" Value="開発済み" />
+        <LocalizationItem Name="Open" Value="開始" />
+        <LocalizationItem Name="Propose" Value="提案" />
+        <LocalizationItem Name="Qualified" Value="有望" />
+      </LocalizationGroup>
+    </LocalizationGroup>
+  </Localization>
+  <NavigationItems>
+    <Items>
+      <Item Id="Sales" Caption="販売">
+        <Items>
+          <Item Id="Lead_ListView" Caption="リード" />
+        </Items>
+      </Item>
+    </Items>
+  </NavigationItems>
+  <Views>
+    <DetailView Id="Lead_DetailView" Caption="リード詳細">
+      <Items>
+        <PropertyEditor Id="Company" Caption="会社名" />
+        <PropertyEditor Id="CreatedOn" Caption="作成日" />
+        <PropertyEditor Id="Email" Caption="メールアドレス" />
+        <PropertyEditor Id="FirstName" Caption="名" />
+        <PropertyEditor Id="LastName" Caption="姓" />
+        <PropertyEditor Id="MiddleName" Caption="ミドルネーム" />
+        <PropertyEditor Id="Mobile" Caption="携帯電話" />
+        <PropertyEditor Id="ModifiedOn" Caption="更新日" />
+        <PropertyEditor Id="Owner" Caption="担当者" />
+        <PropertyEditor Id="Phone" Caption="電話番号" />
+        <PropertyEditor Id="State" Caption="プロセス状態" />
+        <PropertyEditor Id="Status" Caption="ステータス" />
+        <PropertyEditor Id="Subject" Caption="件名" />
+        <PropertyEditor Id="Website" Caption="ウェブサイト" />
+      </Items>
+    </DetailView>
+    <ListView Id="Lead_ListView">
+      <Columns>
+        <ColumnInfo Id="FirstName" Caption="名" />
+        <ColumnInfo Id="LastName" Caption="姓" />
+        <ColumnInfo Id="Status" Caption="ステータス" />
+        <ColumnInfo Id="State" Caption="プロセス状態" />
+        <ColumnInfo Id="Subject" Caption="件名" />
+      </Columns>
+    </ListView>
+  </Views>
+</Application>

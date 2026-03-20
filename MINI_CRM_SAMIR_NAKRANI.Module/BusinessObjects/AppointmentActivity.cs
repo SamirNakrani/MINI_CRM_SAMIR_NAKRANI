@@ -7,6 +7,7 @@ using System;
 namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
 {
     [DefaultClassOptions]
+    [NavigationItem("Activity")]
     public class AppointmentActivity : Activity
     {
         public AppointmentActivity(Session session) : base(session) { }

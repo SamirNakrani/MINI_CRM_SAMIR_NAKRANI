@@ -1,6 +1,6 @@
-@page "/appointments-scheduler"
 @using DevExpress.Blazor
 @using DevExpress.ExpressApp
+@using MINI_CRM_SAMIR_NAKRANI.Blazor.Server.Editors.Scheduler
 @using MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
 @using System.Collections.ObjectModel
 @inject IObjectSpaceFactory ObjectSpaceFactory
@@ -24,8 +24,9 @@
         <DxSchedulerMonthView />
 
     </DxScheduler>
+
     <p style="margin-top: 20px; font-size: 14px; color: #666;">
-         <strong>Tip:</strong> Use the "New Activity" menu to create appointments, then they will appear here.
+        <strong>Tip:</strong> Use the "New Activity" menu to create appointments, then they will appear here.
     </p>
 }
 else
@@ -35,9 +36,11 @@ else
 
 @code {
 
+    [Parameter]
+    public SchedulerViewModel Model { get; set; }
     private DxSchedulerDataStorage DataStorage;
     private IObjectSpace workingObjectSpace;
-    private List<SchedulerAppointmentDto> appointmentsList = new List<SchedulerAppointmentDto>();
+    private List<SchedulerAppointmentDto> appointmentsList = new();
 
     private DateTime StartDate = DateTime.Today;
     private SchedulerViewType ActiveView = SchedulerViewType.Day;
@@ -51,7 +54,7 @@ else
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error initializing scheduler: {ex.Message}");
+            Console.WriteLine($"Scheduler initialization error: {ex.Message}");
         }
     }
 
@@ -59,22 +62,7 @@ else
     {
         try
         {
-            var activities = workingObjectSpace
-                .GetObjects<AppointmentActivity>()
-                .ToList();
-
-            appointmentsList = activities
-                .Select(a => new SchedulerAppointmentDto
-                {
-                    Id = a.Oid.ToString(),
-                    Subject = a.Subject,
-                    Description = a.Description,
-                    Start = a.ScheduledStart,
-                    End = a.ScheduledEnd,
-                    Location = a.Location,
-                    AllDay = a.IsAllDay
-                })
-                .ToList();
+            LoadAppointments();
 
             DataStorage = new DxSchedulerDataStorage
             {
@@ -93,8 +81,28 @@ else
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error in InitializeScheduler: {ex.Message}");
+            Console.WriteLine($"Error initializing scheduler: {ex.Message}");
         }
+    }
+
+    private void LoadAppointments()
+    {
+        var activities = workingObjectSpace
+            .GetObjects<AppointmentActivity>()
+            .ToList();
+
+        appointmentsList = activities
+            .Select(a => new SchedulerAppointmentDto
+            {
+                Id = a.Oid.ToString(),
+                Subject = a.Subject,
+                Description = a.Description,
+                Start = a.ScheduledStart,
+                End = a.ScheduledEnd,
+                Location = a.Location,
+                AllDay = a.IsAllDay
+            })
+            .ToList();
     }
 
     private void RefreshAppointments()
@@ -102,44 +110,15 @@ else
         try
         {
             workingObjectSpace.Refresh();
+            LoadAppointments();
 
-            var activities = workingObjectSpace
-                .GetObjects<AppointmentActivity>()
-                .ToList();
+            DataStorage.AppointmentsSource = appointmentsList;
 
-            appointmentsList = activities
-                .Select(a => new SchedulerAppointmentDto
-                {
-                    Id = a.Oid.ToString(),
-                    Subject = a.Subject,
-                    Description = a.Description,
-                    Start = a.ScheduledStart,
-                    End = a.ScheduledEnd,
-                    Location = a.Location,
-                    AllDay = a.IsAllDay
-                })
-                .ToList();
-
-            DataStorage = new DxSchedulerDataStorage
-            {
-                AppointmentsSource = appointmentsList,
-                AppointmentMappings = new DxSchedulerAppointmentMappings
-                {
-                    Id = nameof(SchedulerAppointmentDto.Id),
-                    Start = nameof(SchedulerAppointmentDto.Start),
-                    End = nameof(SchedulerAppointmentDto.End),
-                    Subject = nameof(SchedulerAppointmentDto.Subject),
-                    Description = nameof(SchedulerAppointmentDto.Description),
-                    Location = nameof(SchedulerAppointmentDto.Location),
-                    AllDay = nameof(SchedulerAppointmentDto.AllDay)
-                }
-            };
-
-            StateHasChanged();
+            InvokeAsync(StateHasChanged);
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error in RefreshAppointments: {ex.Message}");
+            Console.WriteLine($"Refresh error: {ex.Message}");
         }
     }
 
@@ -164,7 +143,7 @@ else
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error inserting appointment: {ex.Message}");
+            Console.WriteLine($"Insert error: {ex.Message}");
         }
     }
 
@@ -191,7 +170,7 @@ else
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error updating appointment: {ex.Message}");
+            Console.WriteLine($"Update error: {ex.Message}");
         }
     }
 
@@ -213,7 +192,7 @@ else
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error removing appointment: {ex.Message}");
+            Console.WriteLine($"Delete error: {ex.Message}");
         }
     }
 

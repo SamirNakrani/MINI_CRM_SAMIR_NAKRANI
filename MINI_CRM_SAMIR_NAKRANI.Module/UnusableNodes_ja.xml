@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <Localization Id="Localization">
+    <LocalizationGroup Name="Labels">
+      <LocalizationItem Name="Previous" Value="前へ" />
+      <LocalizationItem Name="Next" Value="次へ" />
+    </LocalizationGroup>
+  </Localization>
+  <ActionDesign Id="ActionDesign">
+    <Actions Id="Actions">
+      <Action Id="Edit" Caption="編集" />
+      <Action Id="Close" Caption="閉じる" />
+    </Actions>
+  </ActionDesign>
+</Application>
