@@ -94,7 +94,7 @@ else
         appointmentsList = activities
             .Select(a => new SchedulerAppointmentDto
             {
-                Id = a.Oid.ToString(),
+                Id = a.Oid,
                 Subject = a.Subject,
                 Description = a.Description,
                 Start = a.ScheduledStart,
@@ -151,7 +151,13 @@ else
     {
         try
         {
-            var apt = workingObjectSpace.GetObjectByKey<AppointmentActivity>(e.Id);
+            if (!Guid.TryParse(e.Id?.ToString(), out Guid aptGuid))
+            {
+                Console.WriteLine($"Invalid appointment ID: {e.Id}");
+                return;
+            }
+
+            var apt = workingObjectSpace.GetObjectByKey<AppointmentActivity>(aptGuid);
 
             if (apt != null)
             {
@@ -162,8 +168,11 @@ else
                 apt.IsAllDay = e.AllDay;
 
                 workingObjectSpace.CommitChanges();
-
                 RefreshAppointments();
+            }
+            else
+            {
+                Console.WriteLine($"Appointment not found for ID: {aptGuid}");
             }
 
             await InvokeAsync(StateHasChanged);
@@ -178,13 +187,18 @@ else
     {
         try
         {
-            var apt = workingObjectSpace.GetObjectByKey<AppointmentActivity>(e.Id);
+            if (!Guid.TryParse(e.Id?.ToString(), out Guid aptGuid))
+            {
+                Console.WriteLine($"Invalid appointment ID: {e.Id}");
+                return;
+            }
+
+            var apt = workingObjectSpace.GetObjectByKey<AppointmentActivity>(aptGuid);
 
             if (apt != null)
             {
                 workingObjectSpace.Delete(apt);
                 workingObjectSpace.CommitChanges();
-
                 RefreshAppointments();
             }
 
@@ -198,7 +212,7 @@ else
 
     public class SchedulerAppointmentDto
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string Subject { get; set; }
         public string Description { get; set; }
         public DateTime Start { get; set; }
