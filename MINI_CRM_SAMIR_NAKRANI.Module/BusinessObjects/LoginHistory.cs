@@ -19,6 +19,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
         private string hostName;
         private DateTime createdOn;
 
+        [ModelDefault("AllowEdit", "False")]
         [Size(100)]
         public string UserName
         {
@@ -26,6 +27,7 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
             set => SetPropertyValue(nameof(UserName), ref userName, value);
         }
 
+        [ModelDefault("AllowEdit", "False")]
         [Size(50)]
         public string Operation
         {
@@ -34,6 +36,8 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
         }
 
         [Size(50)]
+        [ModelDefault("AllowEdit", "False")]
+
         public string IpAddress
         {
             get => ipAddress;
@@ -41,6 +45,8 @@ namespace MINI_CRM_SAMIR_NAKRANI.Module.BusinessObjects
         }
 
         [Size(100)]
+        [ModelDefault("AllowEdit", "False")]
+
         public string HostName
         {
             get => hostName;
